@@ -39,17 +39,13 @@ store.mainContent({ mode: "narrow" });
           :nodes="[
             {
               name: 'Dashboard',
-              to: 'backend-dashboard',
+              to: 'admin-dashboard',
               icon: 'si si-speedometer',
             },
             {
-              name: 'More',
-              heading: true,
-            },
-            {
-              name: 'Landing',
-              to: 'landing',
-              icon: 'si si-rocket',
+              name: 'Report',
+              to: 'admin-dashboard',
+              icon: 'si si-pie-chart',
             },
           ]"
         />
@@ -100,7 +96,7 @@ store.mainContent({ mode: "narrow" });
     <!-- Footer Content Left -->
     <!-- Using the available v-slot, we can override the default Footer content from layouts/partials/Footer.vue -->
     <template #footer-content-left>
-      <strong>My App</strong>
+      <strong>{{ store.app.name }}</strong>
       &copy; {{ store.app.copyright }}
     </template>
     <!-- END Footer Content Left -->

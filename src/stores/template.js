@@ -6,8 +6,8 @@ export const useTemplateStore = defineStore({
   state: () => ({
     // App vital details
     app: {
-      name: "OneUI Vue Edition",
-      version: "2.2.0",
+      name: "NRA - Natari Remote Attendance",
+      version: "1.0",
       copyright: new Date().getFullYear(),
     },
 
@@ -22,12 +22,12 @@ export const useTemplateStore = defineStore({
     // Default template settings
     // Various of them are also set in each layout variation under layouts/variations/ folder
     settings: {
-      colorTheme: "", // 'amethyst', 'city', 'flat', 'modern', 'smooth'
+      colorTheme: "flat", // 'amethyst', 'city', 'flat', 'modern', 'smooth'
       darkMode: false,
-      darkModeSystem: true,
+      darkModeSystem: false,
       sidebarLeft: true,
       sidebarMini: false,
-      sidebarDark: true,
+      sidebarDark: false,
       sidebarVisibleDesktop: true,
       sidebarVisibleMobile: false,
       sideOverlayVisible: false,
