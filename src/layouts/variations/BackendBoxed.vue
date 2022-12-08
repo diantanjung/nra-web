@@ -42,7 +42,7 @@ store.mainContent({ mode: "boxed" });
       <div class="d-flex align-items-center">
         <!-- Logo -->
         <RouterLink
-          :to="{ name: 'landing' }"
+          :to="{ name: 'admin-dashboard' }"
           class="fw-semibold fs-5 tracking-wider text-dual me-3"
         >
           OneUI
@@ -189,7 +189,7 @@ store.mainContent({ mode: "boxed" });
                 <span class="badge rounded-pill bg-primary ms-2">3</span>
               </a>
               <RouterLink
-                :to="{ name: 'backend-pages-generic-profile' }"
+                :to="{ name: 'admin-dashboard' }"
                 class="dropdown-item d-flex align-items-center justify-content-between"
               >
                 <span class="fs-sm fw-medium">Profile</span>

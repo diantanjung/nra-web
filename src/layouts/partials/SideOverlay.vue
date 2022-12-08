@@ -69,9 +69,10 @@ onUnmounted(() => {
 
           <!-- User Info -->
           <div class="ms-2">
-            <a class="text-dark fw-semibold fs-sm" href="javascript:void(0)"
-              >John Smith</a
-            >
+            <p class="text-dark fw-semibold fs-sm" href="javascript:void(0)">
+              <span>John Smith</span><br>
+              <b><span>Admin</span></b>
+            </p>
           </div>
           <!-- END User Info -->
         </slot>

@@ -1,20 +1,20 @@
 import axios from 'axios';
-
-import '@/bootstrap';
-import store from '@/store';
-import { Message } from 'element-ui';
 // import { Message } from 'element-ui';
 import { getJwtToken, setJwtToken } from '@/utils/auth';
-
-// Create axios instance
-const service = window.axios.create({
-  baseURL: import.meta.env.API_URL,
-  timeout: 60000, // Request timeout
+import { useAuthStore } from "@/stores/auth";
+const service = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  timeout: 60000,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'X-Requested-With': 'XMLHttpRequest'
+  }
 });
 
 // Request intercepter
 service.interceptors.request.use(
   (config) => {
+    const store = useAuthStore();
     const source = axios.CancelToken.source();
     const jwtToken = getJwtToken();
     if (jwtToken) {
@@ -22,9 +22,7 @@ service.interceptors.request.use(
     }
 
     config.cancelToken = source.token;
-
-    store.commit('app/ADD_CANCEL_TOKEN', source);
-
+    store.addCancelToken(source);
     return config;
   },
 
@@ -40,17 +38,10 @@ service.interceptors.response.use(
     }
     return response.data;
   },
-
   (error) => {
+    const store = useAuthStore();
     if (error.response && error.response.status === 401) {
-      store
-        .dispatch('user/logout')
-        .finally(() => {
-          Message.error({
-            message: 'セッション終了、再度ログインしてください',
-          });
-          window.location.href = '/#/login';
-        });
+      store.logout();
     }
     return Promise.reject(error);
   }

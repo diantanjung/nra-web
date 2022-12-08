@@ -76,25 +76,6 @@ store.mainContent({ mode: "narrow" });
       </button>
       <!-- END Toggle Mini Sidebar -->
     </template>
-    <!-- END Header Content Left -->
-
-    <!-- Header Content Right -->
-    <!-- Using the available v-slot, we can override the default Header content from layouts/partials/Header.vue -->
-    <template #header-content-right>
-      <!-- Toggle Side Overlay -->
-      <button
-        type="button"
-        class="btn btn-sm btn-alt-secondary ms-2"
-        @click="store.sideOverlay({ mode: 'toggle' })"
-      >
-        <i class="fa fa-fw fa-list-ul fa-flip-horizontal"></i>
-      </button>
-      <!-- END Toggle Side Overlay -->
-    </template>
-    <!-- END Header Content Right -->
-
-    <!-- Footer Content Left -->
-    <!-- Using the available v-slot, we can override the default Footer content from layouts/partials/Footer.vue -->
     <template #footer-content-left>
       <strong>{{ store.app.name }}</strong>
       &copy; {{ store.app.copyright }}

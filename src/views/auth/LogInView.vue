@@ -1,31 +1,28 @@
 <script setup>
 import { reactive, computed } from "vue";
 import { useTemplateStore } from "@/stores/template";
+import { useAuthStore } from "@/stores/auth";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
-import { required, minLength } from "@vuelidate/validators";
+import { required } from "@vuelidate/validators";
 
 // Main store and Router
 const store = useTemplateStore();
+const authStore = useAuthStore();
 
 // Input state variables
 const state = reactive({
   username: null,
   password: null,
+  isLoading: false,
 });
 
 // Validation rules
 const rules = computed(() => {
   return {
-    username: {
-      required,
-      minLength: minLength(3),
-    },
-    password: {
-      required,
-      minLength: minLength(5),
-    },
+    username: { required },
+    password: { required },
   };
 });
 
@@ -35,12 +32,16 @@ const v$ = useVuelidate(rules, state);
 // On form submission
 async function onSubmit() {
   const result = await v$.value.$validate();
-
   if (!result) {
-    // notify user form is invalid
     return;
   }
-  debugger;
+  state.isLoading = true;
+  try {
+    await authStore.login(state);
+  } catch (error) {
+    console.log(error);
+  }
+  state.isLoading = false;
 }
 </script>
 
@@ -102,9 +103,12 @@ async function onSubmit() {
                 </div>
                 <div class="row mb-4">
                   <div class="col-md-6 col-xl-5">
-                    <button type="submit" class="btn w-100 btn-alt-primary">
-                      <i class="fa fa-fw fa-sign-in-alt me-1 opacity-50"></i>
-                      Log In
+                    <button type="submit" class="btn w-100 btn-alt-primary" :disabled="state.isLoading">
+                      <template v-if="state.isLoading">Loading...</template>
+                      <template v-else>
+                        <i class="fa fa-fw fa-sign-in-alt me-1 opacity-50"></i>
+                        Log In
+                      </template>
                     </button>
                   </div>
                 </div>

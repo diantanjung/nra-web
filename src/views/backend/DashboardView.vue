@@ -290,7 +290,7 @@ const newCustomersOptions = reactive({
         <h2 class="h6 fw-medium fw-medium text-muted mb-0">
           Welcome
           <RouterLink
-            :to="{ name: 'backend-pages-generic-profile' }"
+            :to="{ name: 'admin-dashboard' }"
             class="fw-semibold"
             >John</RouterLink
           >, everything looks great.

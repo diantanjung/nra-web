@@ -2,12 +2,14 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useTemplateStore } from "@/stores/template";
+import { useAuthStore } from "@/stores/auth";
 
 // Grab example data
 import notifications from "@/data/notifications";
 
 // Main store and Router
 const store = useTemplateStore();
+const authStore = useAuthStore();
 const router = useRouter();
 
 // Reactive variables
@@ -24,6 +26,11 @@ function eventHeaderSearch(event) {
     event.preventDefault();
     store.headerSearch({ mode: "off" });
   }
+}
+
+async function onLogout() {
+  await authStore.logout()
+  router.push("/login");
 }
 
 // Attach ESCAPE key event listener
@@ -120,7 +127,7 @@ onUnmounted(() => {
                     alt="Header Avatar"
                     style="width: 21px"
                   />
-                  <span class="d-none d-sm-inline-block ms-2">John</span>
+                  <span class="d-none d-sm-inline-block ms-2">{{ authStore.auth.name }}</span>
                   <i
                     class="fa fa-fw fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1"
                   ></i>
@@ -137,8 +144,8 @@ onUnmounted(() => {
                       src="/assets/media/avatars/avatar10.jpg"
                       alt="Header Avatar"
                     />
-                    <p class="mt-2 mb-0 fw-medium">John Smith</p>
-                    <p class="mb-0 text-muted fs-sm fw-medium">Web Developer</p>
+                    <p class="mt-2 mb-0 fw-medium">{{ authStore.auth.name }}</p>
+                    <p class="mb-0 text-muted fs-sm fw-medium">{{ authStore.auth.username }}</p>
                   </div>
                   <div class="p-2">
                     <a
@@ -149,11 +156,10 @@ onUnmounted(() => {
                       <span class="badge rounded-pill bg-primary ms-2">3</span>
                     </a>
                     <RouterLink
-                      :to="{ name: 'backend-pages-generic-profile' }"
+                      :to="{ name: 'admin-dashboard' }"
                       class="dropdown-item d-flex align-items-center justify-content-between"
                     >
                       <span class="fs-sm fw-medium">Profile</span>
-                      <span class="badge rounded-pill bg-primary ms-2">1</span>
                     </RouterLink>
                     <a
                       class="dropdown-item d-flex align-items-center justify-content-between"
@@ -164,18 +170,9 @@ onUnmounted(() => {
                   </div>
                   <div role="separator" class="dropdown-divider m-0"></div>
                   <div class="p-2">
-                    <RouterLink
-                      :to="{ name: 'auth-lock' }"
-                      class="dropdown-item d-flex align-items-center justify-content-between"
-                    >
-                      <span class="fs-sm fw-medium">Lock Account</span>
-                    </RouterLink>
-                    <RouterLink
-                      :to="{ name: 'auth-signin' }"
-                      class="dropdown-item d-flex align-items-center justify-content-between"
-                    >
+                    <button class="dropdown-item d-flex align-items-center justify-content-between cursor-pointer bg-danger text-white" @click="onLogout">
                       <span class="fs-sm fw-medium">Log Out</span>
-                    </RouterLink>
+                    </button>
                   </div>
                 </div>
               </div>
