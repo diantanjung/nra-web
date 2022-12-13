@@ -1,14 +1,17 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
-
+import { useAuthStore } from "@/stores/auth";
+import menu from "@/data/menu";
 import BaseLayout from "@/layouts/BaseLayout.vue";
 import BaseNavigation from "@/components/BaseNavigation.vue";
+import { computed } from "vue";
 
-// Main store
-const store = useTemplateStore();
+// Main templateStore
+const templateStore = useTemplateStore();
+const authStore = useAuthStore();
 
 // Set default elements for this layout
-store.setLayout({
+templateStore.setLayout({
   header: true,
   sidebar: true,
   sideOverlay: true,
@@ -16,8 +19,14 @@ store.setLayout({
 });
 
 // Set various template options for this layout variation
-store.headerStyle({ mode: "light" });
-store.mainContent({ mode: "narrow" });
+templateStore.headerStyle({ mode: "light" });
+templateStore.mainContent({ mode: "narrow" });
+
+
+const nodes = computed(() => {
+  return menu.filter(side => side.roles.includes(authStore.auth.role_id));
+});
+
 </script>
 
 <template>
@@ -36,18 +45,7 @@ store.mainContent({ mode: "narrow" });
     <template #sidebar-content>
       <div class="content-side">
         <BaseNavigation
-          :nodes="[
-            {
-              name: 'Dashboard',
-              to: 'admin-dashboard',
-              icon: 'si si-speedometer',
-            },
-            {
-              name: 'Report',
-              to: 'admin-dashboard',
-              icon: 'si si-pie-chart',
-            },
-          ]"
+          :nodes="nodes"
         />
       </div>
     </template>
@@ -60,7 +58,7 @@ store.mainContent({ mode: "narrow" });
       <button
         type="button"
         class="btn btn-sm btn-alt-secondary me-2 d-lg-none"
-        @click="store.sidebar({ mode: 'toggle' })"
+        @click="templateStore.sidebar({ mode: 'toggle' })"
       >
         <i class="fa fa-fw fa-bars"></i>
       </button>
@@ -70,15 +68,15 @@ store.mainContent({ mode: "narrow" });
       <button
         type="button"
         class="btn btn-sm btn-alt-secondary me-2 d-none d-lg-inline-block"
-        @click="store.sidebarMini({ mode: 'toggle' })"
+        @click="templateStore.sidebarMini({ mode: 'toggle' })"
       >
         <i class="fa fa-fw fa-ellipsis-v"></i>
       </button>
       <!-- END Toggle Mini Sidebar -->
     </template>
     <template #footer-content-left>
-      <strong>{{ store.app.name }}</strong>
-      &copy; {{ store.app.copyright }}
+      <strong>{{ templateStore.app.name }}</strong>
+      &copy; {{ templateStore.app.copyright }}
     </template>
     <!-- END Footer Content Left -->
   </BaseLayout>

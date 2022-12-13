@@ -2,9 +2,11 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useTemplateStore } from "@/stores/template";
+// import { useAuthStore } from "@/stores/auth";
 
-// Main store and Route
-const store = useTemplateStore();
+// Main templateStore and Route
+const templateStore = useTemplateStore();
+// const authStore = useAuthStore();
 const route = useRoute();
 
 // Component properties
@@ -50,7 +52,6 @@ const props = defineProps({
       "Disables submenu click on 2+ level when we are in horizontal and hover mode",
   },
 });
-
 // Set CSS classes accordingly
 const classContainer = computed(() => {
   return {
@@ -101,7 +102,7 @@ function linkClicked(e, submenu) {
   } else {
     // If we are in mobile, close the sidebar
     if (window.innerWidth < 992) {
-      store.sidebar({ mode: "close" });
+      templateStore.sidebar({ mode: "close" });
     }
   }
 }

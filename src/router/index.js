@@ -15,6 +15,12 @@ const Login = () => import("@/views/auth/LogInView.vue");
 // * DASHBOARD
 const Dashboard = () => import("@/views/admin/DashboardView.vue");
 
+// *USER
+const UserIndex = () => import("@/views/admin/User/IndexView.vue");
+
+// * REPORT
+const ReportIndex = () => import("@/views/admin/Report/IndexView.vue");
+
 // Set all routes
 const routes = [
   {
@@ -38,6 +44,22 @@ const routes = [
         path: "dashboard",
         name: "admin-dashboard",
         component: Dashboard,
+      },
+      {
+        path: "report",
+        name: "admin-report",
+        component: ReportIndex,
+      },
+      {
+        path: "master",
+        redirect: "/master/user",
+        children: [
+          {
+            path: "user",
+            name: "master-user-index",
+            component: UserIndex,
+          },
+        ],
       },
     ],
   },

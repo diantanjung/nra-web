@@ -5,8 +5,6 @@ import { useTemplateStore } from "@/stores/template";
 import BaseLayout from "@/layouts/BaseLayout.vue";
 import BaseNavigation from "@/components/BaseNavigation.vue";
 
-// Grab example data
-import notifications from "@/data/notifications";
 
 // Grab menu navigation arrays
 import menu from "@/data/menu";
@@ -61,7 +59,6 @@ store.mainContent({ mode: "boxed" });
             aria-expanded="false"
           >
             <i class="fa fa-fw fa-bell"></i>
-            <span v-if="notifications.length > 0" class="text-primary">•</span>
           </button>
           <div
             class="dropdown-menu dropdown-menu-lg p-0 border-0 fs-sm"
@@ -72,42 +69,7 @@ store.mainContent({ mode: "boxed" });
             >
               <h5 class="dropdown-header text-uppercase">Notifications</h5>
             </div>
-            <ul class="nav-items mb-0">
-              <li
-                v-for="(notification, index) in notifications"
-                :key="`notification-${index}`"
-              >
-                <a class="text-dark d-flex py-2" :href="`${notification.href}`">
-                  <div class="flex-shrink-0 me-2 ms-3">
-                    <i :class="`${notification.icon}`"></i>
-                  </div>
-                  <div class="flex-grow-1 pe-2">
-                    <div class="fw-semibold">{{ notification.title }}</div>
-                    <span class="fw-medium text-muted">
-                      {{ notification.time }}
-                    </span>
-                  </div>
-                </a>
-              </li>
-              <li v-if="!notifications.length" class="p-2">
-                <div
-                  class="alert alert-light d-flex align-items-center space-x-2 mb-0"
-                  role="alert"
-                >
-                  <i class="fa fa-exclamation-triangle opacity-50"></i>
-                  <p class="mb-0">No new ones!</p>
-                </div>
-              </li>
-            </ul>
-            <div
-              v-if="notifications.length > 0"
-              class="p-2 border-top text-center"
-            >
-              <a class="d-inline-block fw-medium" href="javascript:void(0)">
-                <i class="fa fa-fw fa-arrow-down me-1 opacity-50"></i> Load
-                More..
-              </a>
-            </div>
+            <ul class="nav-items mb-0"></ul>
           </div>
         </div>
         <!-- END Notifications Dropdown -->

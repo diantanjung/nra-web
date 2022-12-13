@@ -4,8 +4,6 @@ import { useRouter } from "vue-router";
 import { useTemplateStore } from "@/stores/template";
 import { useAuthStore } from "@/stores/auth";
 
-// Grab example data
-import notifications from "@/data/notifications";
 
 // Main store and Router
 const store = useTemplateStore();
@@ -189,9 +187,6 @@ onUnmounted(() => {
                   aria-expanded="false"
                 >
                   <i class="fa fa-fw fa-bell"></i>
-                  <span v-if="notifications.length > 0" class="text-primary"
-                    >•</span
-                  >
                 </button>
                 <div
                   class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 border-0 fs-sm"
@@ -204,62 +199,9 @@ onUnmounted(() => {
                       Notifications
                     </h5>
                   </div>
-                  <ul class="nav-items mb-0">
-                    <li
-                      v-for="(notification, index) in notifications"
-                      :key="`notification-${index}`"
-                    >
-                      <a
-                        class="text-dark d-flex py-2"
-                        :href="`${notification.href}`"
-                      >
-                        <div class="flex-shrink-0 me-2 ms-3">
-                          <i :class="`${notification.icon}`"></i>
-                        </div>
-                        <div class="flex-grow-1 pe-2">
-                          <div class="fw-semibold">
-                            {{ notification.title }}
-                          </div>
-                          <span class="fw-medium text-muted">
-                            {{ notification.time }}
-                          </span>
-                        </div>
-                      </a>
-                    </li>
-                    <li v-if="!notifications.length" class="p-2">
-                      <div
-                        class="alert alert-light d-flex align-items-center space-x-2 mb-0"
-                        role="alert"
-                      >
-                        <i class="fa fa-exclamation-triangle opacity-50"></i>
-                        <p class="mb-0">No new ones!</p>
-                      </div>
-                    </li>
-                  </ul>
-                  <div
-                    v-if="notifications.length > 0"
-                    class="p-2 border-top text-center"
-                  >
-                    <a
-                      class="d-inline-block fw-medium"
-                      href="javascript:void(0)"
-                    >
-                      <i class="fa fa-fw fa-arrow-down me-1 opacity-50"></i>
-                      Load More..
-                    </a>
-                  </div>
+                  <ul class="nav-items mb-0"></ul>
                 </div>
               </div>
-              <!-- END Notifications Dropdown -->
-
-              <!-- Toggle Side Overlay -->
-              <button
-                type="button"
-                class="btn btn-sm btn-alt-secondary ms-2"
-                @click="store.sideOverlay({ mode: 'toggle' })"
-              >
-                <i class="fa fa-fw fa-list-ul fa-flip-horizontal"></i>
-              </button>
               <!-- END Toggle Side Overlay -->
             </slot>
           </div>
@@ -306,7 +248,7 @@ onUnmounted(() => {
       >
         <div class="content-header">
           <div class="w-100 text-center">
-            <i class="fa fa-fw fa-circle-notch fa-spin"></i>
+            <h4 class="mb-0">Loading...</h4>
           </div>
         </div>
       </div>

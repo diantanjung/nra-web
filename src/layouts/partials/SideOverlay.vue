@@ -5,14 +5,6 @@ import { useTemplateStore } from "@/stores/template";
 // SimpleBar, for more info and examples you can check out https://github.com/Grsmto/simplebar/tree/master/packages/simplebar-vue
 import SimpleBar from "simplebar";
 
-// Grab example data
-import activity from "@/data/activity";
-import sales from "@/data/sales";
-import users from "@/data/users";
-
-const salesToday = sales.today;
-const salesYesterday = sales.yesterday;
-
 // Main store
 const store = useTemplateStore();
 
