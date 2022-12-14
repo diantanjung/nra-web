@@ -1,16 +1,32 @@
 <script setup>
-import { computed, onMounted, reactive, nextTick, ref } from "vue";
 import { reports } from "@/api/survey";
 import { useTemplateStore } from "@/stores/template";
+import {
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import moment from "moment";
+import { computed, nextTick, onMounted, reactive, ref } from "vue";
+import { Bar, Pie } from "vue-chartjs";
 import FlatPickr from "vue-flatpickr-component";
-import { Bar, Pie } from 'vue-chartjs'
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement } from 'chart.js'
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement)
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  ArcElement
+);
 ChartJS.register(ChartDataLabels);
-
 
 const chartListComponent = ref(true);
 
@@ -35,7 +51,11 @@ const chartOptions = computed(() => [
     type: "pie",
   },
   { id: "keep_chiller_clean", title: "Keep Chiller Clean", type: "pie" },
-  { id: "on_shelf_availability", title: "On Shelf Availability", type: "grouped_bar" },
+  {
+    id: "on_shelf_availability",
+    title: "On Shelf Availability",
+    type: "grouped_bar",
+  },
   { id: "planogram", title: "Planogram", type: "pie" },
   { id: "share_of_space", title: "Secure Share of Space", type: "pie" },
   { id: "daily_inventory", title: "Daily Inventory Update", type: "bar" },
@@ -45,7 +65,9 @@ const state = reactive({
   selectedCharts: chartOptions.value.map((chart) => chart.id),
   selectedChartOption: "percentage",
   charts: [],
-  dateRange: `${moment().subtract(7, "days").format("YYYY-MM-DD")} to ${moment().format("YYYY-MM-DD")}`,
+  dateRange: `${moment()
+    .subtract(7, "days")
+    .format("YYYY-MM-DD")} to ${moment().format("YYYY-MM-DD")}`,
   chartOptionsPercentage: {
     pie: {
       responsive: true,
@@ -56,117 +78,148 @@ const state = reactive({
           formatter: (value, ctx) => {
             let sum = 0;
             let dataArr = ctx.chart.data.datasets[0].data;
-            dataArr.map(data => {
-                sum += data;
+            dataArr.map((data) => {
+              sum += data;
             });
-            let percentage = (value*100 / sum).toFixed(2)+"%";
+            let percentage = ((value * 100) / sum).toFixed(2) + "%";
             return percentage;
           },
-        }
-      }
+        },
+      },
     },
     bar: {
-      indexAxis: 'y',
+      indexAxis: "y",
       plugins: {
         datalabels: {
           color: "#fff",
           formatter: (value, ctx) => {
             let sum = 0;
             let dataArr = ctx.chart.data.datasets[0].data;
-            dataArr.map(data => {
-                sum += data;
+            dataArr.map((data) => {
+              sum += data;
             });
-            let percentage = (value*100 / sum).toFixed(2)+"%";
+            let percentage = ((value * 100) / sum).toFixed(2) + "%";
             return percentage;
           },
-        }
-      }
+        },
+      },
     },
     grouped_bar: {
-      indexAxis: 'y',
+      indexAxis: "y",
       plugins: {
         datalabels: {
           color: "#fff",
           formatter: (value, ctx) => {
             let sum = 0;
             let dataArr = ctx.chart.data.datasets[0].data;
-            dataArr.map(data => {
-                sum += data;
+            dataArr.map((data) => {
+              sum += data;
             });
-            let percentage = (value*100 / sum).toFixed(2)+"%";
+            let percentage = ((value * 100) / sum).toFixed(2) + "%";
             return percentage;
           },
-        }
+        },
       },
       scales: {
         x: {
           stacked: true,
         },
         y: {
-          stacked: true
-        }
-      }
-    }
+          stacked: true,
+        },
+      },
+    },
   },
   chartOptionsNumber: {
     pie: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        datalabels: { color: "#fff" }
-      }
+        datalabels: { color: "#fff" },
+      },
     },
     bar: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        datalabels: { color: "#fff" }
-      }
+        datalabels: { color: "#fff" },
+      },
     },
     grouped_bar: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        datalabels: { color: "#fff" }
+        datalabels: { color: "#fff" },
       },
       scales: {
         x: {
           stacked: true,
         },
         y: {
-          stacked: true
-        }
-      }
-    }
+          stacked: true,
+        },
+      },
+    },
   },
 });
-
-
 
 async function getReports(isFirstTime = false) {
   const loader = isFirstTime ? "pageLoader" : "headerLoader";
   templateStore[loader]({ mode: "on" });
   const dates = state.dateRange.split(" to ");
-  const { data: chartValues } = await reports({ start_date: dates[0], end_date: dates[1] });
+  const { data: chartValues } = await reports({
+    start_date: dates[0],
+    end_date: dates[1],
+  });
   state.charts = state.selectedCharts.map((chart) => {
-
     const chartOption = chartOptions.value.find(
       (chartOption) => chartOption.id == chart
     );
     const data = chartValues[chart];
     let props = {};
-    if(chart != "on_shelf_availability") {
+    if (chart == "chiller_condition") {
       props = {
-        labels: data.map(d => d.label),
-        datasets: [{ data: data.map(d => d.total), backgroundColor: ['#41B883', '#E46651', '#023436', '#ffd639', '#007CBE'], label: chartOption.title}]
+        labels: data.map((d) => d.label),
+        datasets: [
+          {
+            data: data.map((d) => d.total),
+            backgroundColor: ["#41B883", "#E46651", "#023436"],
+            label: chartOption.title,
+          },
+        ],
+      };
+    } else if (chart == "on_shelf_availability") {
+      props = {
+        labels: data.data_true.map((d) => d.label),
+        datasets: [
+          {
+            data: data.data_true.map((d) => d.total),
+            backgroundColor: ["#41B883"],
+            label: "On Shelf",
+          },
+          {
+            data: data.data_false.map((d) => d.total),
+            backgroundColor: ["#E46651"],
+            label: "Off Shelf",
+          },
+        ],
       };
     } else {
       props = {
-        labels: data.data_true.map(d => d.label),
+        labels: data.map((d) => d.label),
         datasets: [
-          { data: data.data_true.map(d => d.total), backgroundColor: ['#41B883'], label: 'On Shelf'},
-          { data: data.data_false.map(d => d.total), backgroundColor: ['#E46651'], label: 'Off Shelf'}
-        ]
+          {
+            data: data.map((d) => d.total),
+            backgroundColor: [
+              "#E46651",
+              "#41B883",
+              "#023436",
+              "#ffd639",
+              "#007CBE",
+            ],
+            label: chartOption.title,
+          },
+        ],
       };
     }
     return { ...chartOption, data, props };
@@ -178,12 +231,12 @@ function handleFilter() {
   getReports(false);
 }
 
-const handleChartOptionChange = async(type) => {
+const handleChartOptionChange = async (type) => {
   state.selectedChartOption = type;
   chartListComponent.value = false;
-	await nextTick();
+  await nextTick();
   chartListComponent.value = true;
-}
+};
 // Attach ESCAPE key event listener
 onMounted(async () => {
   getReports(true);
@@ -195,7 +248,6 @@ onMounted(async () => {
 @import "flatpickr/dist/flatpickr.css";
 @import "@/assets/scss/vendor/flatpickr";
 </style>
-
 
 <template>
   <BasePageHeading title="Report" :subtitle="state.dateRange">
@@ -213,14 +265,22 @@ onMounted(async () => {
       <div class="btn-group ms-3" role="group" aria-label="Horizontal Primary">
         <button
           type="button"
-          :class="state.selectedChartOption == 'percentage' ? 'btn btn-alt-primary' : 'btn btn-alt-primary-outline'"
+          :class="
+            state.selectedChartOption == 'percentage'
+              ? 'btn btn-alt-primary'
+              : 'btn btn-alt-primary-outline'
+          "
           @click="handleChartOptionChange('percentage')"
         >
           % Persen
         </button>
         <button
           type="button"
-          :class="state.selectedChartOption == 'number' ? 'btn btn-alt-primary' : 'btn btn-alt-primary-outline'"
+          :class="
+            state.selectedChartOption == 'number'
+              ? 'btn btn-alt-primary'
+              : 'btn btn-alt-primary-outline'
+          "
           @click="handleChartOptionChange('number')"
         >
           # Angka
@@ -236,11 +296,20 @@ onMounted(async () => {
           <Pie
             v-if="chart.type == 'pie'"
             :data="chart.props"
-            :options="state.selectedChartOption == 'percentage' ? state.chartOptionsPercentage[chart.type] : state.chartOptionsNumber[chart.type]"/>
+            :options="
+              state.selectedChartOption == 'percentage'
+                ? state.chartOptionsPercentage[chart.type]
+                : state.chartOptionsNumber[chart.type]
+            "
+          />
           <Bar
             v-else
             :data="chart.props"
-            :options="state.selectedChartOption == 'percentage' ? state.chartOptionsPercentage[chart.type] : state.chartOptionsNumber[chart.type]"
+            :options="
+              state.selectedChartOption == 'percentage'
+                ? state.chartOptionsPercentage[chart.type]
+                : state.chartOptionsNumber[chart.type]
+            "
           />
         </BaseBlock>
       </div>
@@ -281,7 +350,11 @@ onMounted(async () => {
               />
               <h5 class="mt-4 mb-2">Daftar Chart</h5>
               <div class="row items-push">
-                <div class="col-6" v-for="chart in chartOptions" :key="chart.id">
+                <div
+                  class="col-6"
+                  v-for="chart in chartOptions"
+                  :key="chart.id"
+                >
                   <div class="form-check form-block">
                     <input
                       class="form-check-input"
@@ -290,7 +363,9 @@ onMounted(async () => {
                       :id="chart.id"
                       :value="chart.id"
                     />
-                    <label class="form-check-label" :for="chart.id">{{ chart.title }}</label>
+                    <label class="form-check-label" :for="chart.id">{{
+                      chart.title
+                    }}</label>
                   </div>
                 </div>
               </div>
