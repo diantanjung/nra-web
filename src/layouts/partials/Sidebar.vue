@@ -103,9 +103,7 @@ onMounted(() => {
             <span class="smini-visible">
               <i class="fa fa-circle-notch text-primary"></i>
             </span>
-            <span class="smini-hide fs-5 tracking-wider">
-              NRA
-            </span>
+            <img class="smini-hide fs-5 tracking-wider" src="/assets/media/logo/nra-logo-white.png" alt="" height="30">
           </RouterLink>
           <!-- END Logo -->
         </slot>

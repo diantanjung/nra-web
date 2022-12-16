@@ -27,7 +27,7 @@ export const useTemplateStore = defineStore({
       darkModeSystem: false,
       sidebarLeft: true,
       sidebarMini: false,
-      sidebarDark: false,
+      sidebarDark: true,
       sidebarVisibleDesktop: true,
       sidebarVisibleMobile: false,
       sideOverlayVisible: false,
