@@ -27,7 +27,7 @@ export default [
     roles: [ADMIN],
     sub: [
       {
-        name: "Manajemen User",
+        name: "User",
         to: "master-user-index",
         roles: [ADMIN]
       }
