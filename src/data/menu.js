@@ -20,17 +20,17 @@ export default [
     icon: 'si si-pie-chart',
     roles: [ADMIN]
   },
-  {
-    name: "Data Master",
-    icon: "fa fa-database",
-    subActivePaths: "/admin/master",
-    roles: [ADMIN],
-    sub: [
-      {
-        name: "User",
-        to: "master-user-index",
-        roles: [ADMIN]
-      }
-    ],
-  },
+  // {
+  //   name: "Data Master",
+  //   icon: "fa fa-database",
+  //   subActivePaths: "/admin/master",
+  //   roles: [ADMIN],
+  //   sub: [
+  //     {
+  //       name: "User",
+  //       to: "master-user-index",
+  //       roles: [ADMIN]
+  //     }
+  //   ],
+  // },
 ]

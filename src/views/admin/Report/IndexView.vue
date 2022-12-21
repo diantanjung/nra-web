@@ -61,115 +61,132 @@ const chartOptions = computed(() => [
   { id: "daily_inventory", title: "Daily Inventory Update", type: "bar" },
 ]);
 
+const chartOptionsPercentage = computed(() => ({
+  pie: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      datalabels: {
+        color: "#fff",
+        formatter: (value, ctx) => {
+          let sum = 0;
+          let dataArr = ctx.chart.data.datasets[0].data;
+          dataArr.map((data) => {
+            sum += data;
+          });
+          let percentage = ((value * 100) / sum).toFixed(2) + "%";
+          return percentage;
+        },
+      },
+    },
+  },
+  bar: {
+    indexAxis: "y",
+    plugins: {
+      datalabels: {
+        color: "#fff",
+        formatter: (value, ctx) => {
+          let sum = 0;
+          let dataArr = ctx.chart.data.datasets[0].data;
+          dataArr.map((data) => {
+            sum += data;
+          });
+          let percentage = ((value * 100) / sum).toFixed(2) + "%";
+          return percentage;
+        },
+      },
+    },
+  },
+  grouped_bar: {
+    indexAxis: "y",
+    plugins: {
+      datalabels: {
+        color: "#fff",
+        formatter: (value, ctx) => {
+          let sum = 0;
+          let dataArr = ctx.chart.data.datasets[0].data;
+          dataArr.map((data) => {
+            sum += data;
+          });
+          let percentage = ((value * 100) / sum).toFixed(2) + "%";
+          return percentage;
+        },
+      },
+    },
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true,
+      },
+    },
+  },
+}));
+
+const chartOptionsNumber = computed(() => ({
+  pie: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      datalabels: { color: "#fff" },
+    },
+  },
+  bar: {
+    indexAxis: "y",
+    plugins: {
+      datalabels: { color: "#fff" },
+    },
+  },
+  grouped_bar: {
+    indexAxis: "y",
+    plugins: {
+      datalabels: {
+        color: "#fff",
+        formatter: (value, ctx) => {
+          if(ctx.chart.data.labels[ctx.dataIndex] != "TOTAL") return value;
+          const chart = state.charts.find(ch => ch.id == "on_shelf_availability")
+          if(!chart) return value;
+          const dataset = ctx.dataset.label == 'On Shelf' ? chart.data.data_true : chart.data.data_false;
+          const data = dataset[dataset.length - 1].origin;
+          return data;
+        },
+      },
+    },
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true,
+      },
+    },
+  },
+}));
+
 const state = reactive({
   selectedCharts: chartOptions.value.map((chart) => chart.id),
   selectedChartOption: "percentage",
   charts: [],
   dateRange: `${moment()
     .subtract(7, "days")
-    .format("YYYY-MM-DD")} to ${moment().format("YYYY-MM-DD")}`,
-  chartOptionsPercentage: {
-    pie: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        datalabels: {
-          color: "#fff",
-          formatter: (value, ctx) => {
-            let sum = 0;
-            let dataArr = ctx.chart.data.datasets[0].data;
-            dataArr.map((data) => {
-              sum += data;
-            });
-            let percentage = ((value * 100) / sum).toFixed(2) + "%";
-            return percentage;
-          },
-        },
-      },
-    },
-    bar: {
-      indexAxis: "y",
-      plugins: {
-        datalabels: {
-          color: "#fff",
-          formatter: (value, ctx) => {
-            let sum = 0;
-            let dataArr = ctx.chart.data.datasets[0].data;
-            dataArr.map((data) => {
-              sum += data;
-            });
-            let percentage = ((value * 100) / sum).toFixed(2) + "%";
-            return percentage;
-          },
-        },
-      },
-    },
-    grouped_bar: {
-      indexAxis: "y",
-      plugins: {
-        datalabels: {
-          color: "#fff",
-          formatter: (value, ctx) => {
-            let sum = 0;
-            let dataArr = ctx.chart.data.datasets[0].data;
-            dataArr.map((data) => {
-              sum += data;
-            });
-            let percentage = ((value * 100) / sum).toFixed(2) + "%";
-            return percentage;
-          },
-        },
-      },
-      scales: {
-        x: {
-          stacked: true,
-        },
-        y: {
-          stacked: true,
-        },
-      },
-    },
-  },
-  chartOptionsNumber: {
-    pie: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        datalabels: { color: "#fff" },
-      },
-    },
-    bar: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        datalabels: { color: "#fff" },
-      },
-    },
-    grouped_bar: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        datalabels: { color: "#fff" },
-      },
-      scales: {
-        x: {
-          stacked: true,
-        },
-        y: {
-          stacked: true,
-        },
-      },
-    },
-  },
+    .format("YYYY-MM-DD")} - ${moment().format("YYYY-MM-DD")}`,
+});
+
+const displayDateRange = computed(() => {
+  const dates = state.dateRange.split(" - ");
+  const start_date = moment(dates[0]).format("DD-MM-YYYY");
+  const end_date = moment(dates[1]).format("DD-MM-YYYY");
+  return `${start_date} - ${end_date}`;
 });
 
 async function getReports(isFirstTime = false) {
   const loader = isFirstTime ? "pageLoader" : "headerLoader";
   templateStore[loader]({ mode: "on" });
-  const dates = state.dateRange.split(" to ");
+  const dates = state.dateRange.split(" - ");
   const { data: chartValues } = await reports({
-    start_date: dates[0],
-    end_date: dates[1],
+    start_date: moment(dates[0]).format("YYYY-MM-DD"),
+    end_date: moment(dates[1]).format("YYYY-MM-DD"),
   });
   state.charts = state.selectedCharts.map((chart) => {
     const chartOption = chartOptions.value.find(
@@ -177,6 +194,18 @@ async function getReports(isFirstTime = false) {
     );
     const data = chartValues[chart];
     let props = {};
+
+    if(chart == "on_shelf_availability") {
+      const items = data.data_true.length - 1;
+      data.data_true = data.data_true
+        .map(d => {
+          return d.label == "TOTAL" ? {...d, origin: d.total, total: Math.round(d.total / items)} : d
+        })
+      data.data_false = data.data_false
+        .map(d => {
+          return d.label == "TOTAL" ? {...d, origin: d.total, total: Math.round(d.total / items)} : d
+        })
+    }
     if (chart == "chiller_condition") {
       props = {
         labels: data.map((d) => d.label),
@@ -250,11 +279,11 @@ onMounted(async () => {
 </style>
 
 <template>
-  <BasePageHeading title="Report" :subtitle="state.dateRange">
+  <BasePageHeading title="Report" :subtitle="displayDateRange">
     <template #extra>
       <button
         type="button"
-        class="btn btn-primary"
+        class="btn btn-info"
         v-click-ripple
         data-bs-toggle="modal"
         data-bs-target="#modal-block-normal"
@@ -298,8 +327,8 @@ onMounted(async () => {
             :data="chart.props"
             :options="
               state.selectedChartOption == 'percentage'
-                ? state.chartOptionsPercentage[chart.type]
-                : state.chartOptionsNumber[chart.type]
+                ? chartOptionsPercentage[chart.type]
+                : chartOptionsNumber[chart.type]
             "
           />
           <Bar
@@ -307,8 +336,8 @@ onMounted(async () => {
             :data="chart.props"
             :options="
               state.selectedChartOption == 'percentage'
-                ? state.chartOptionsPercentage[chart.type]
-                : state.chartOptionsNumber[chart.type]
+                ? chartOptionsPercentage[chart.type]
+                : chartOptionsNumber[chart.type]
             "
           />
         </BaseBlock>
@@ -346,7 +375,13 @@ onMounted(async () => {
                 class="form-control"
                 placeholder="Select Date Range"
                 v-model="state.dateRange"
-                :config="{ mode: 'range', maxDate: 'today' }"
+                :config="{
+                  mode: 'range',
+                  maxDate: 'today',
+                  altInput: true,
+                  altFormat: 'd-m-Y',
+                  locale: { rangeSeparator: ' - ' },
+                }"
               />
               <h5 class="mt-4 mb-2">Daftar Chart</h5>
               <div class="row items-push">
@@ -380,7 +415,7 @@ onMounted(async () => {
               </button>
               <button
                 type="button"
-                class="btn btn-sm btn-primary"
+                class="btn btn-sm btn-info"
                 data-bs-dismiss="modal"
                 @click="handleFilter"
               >

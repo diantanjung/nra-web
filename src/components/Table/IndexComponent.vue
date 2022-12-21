@@ -1,7 +1,6 @@
 <script setup>
 import request from "@/utils/request";
 import { reactive, computed, ref, nextTick, onMounted } from "vue";
-import { useTemplateStore } from "@/stores/template";
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
 import { Dataset, DatasetItem, DatasetSearch, DatasetShow } from "vue-dataset";
 
@@ -12,8 +11,6 @@ import DatasetInfo from "./InfoComponent.vue";
 const blockRef = ref(null);
 const tableRef = ref(null);
 const tableKey = ref(0);
-
-const templateStore = useTemplateStore();
 
 const props = defineProps({
   endpoint: {

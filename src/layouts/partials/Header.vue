@@ -146,25 +146,12 @@ onUnmounted(() => {
                     <p class="mb-0 text-muted fs-sm fw-medium">{{ authStore.auth.username }}</p>
                   </div>
                   <div class="p-2">
-                    <a
-                      class="dropdown-item d-flex align-items-center justify-content-between"
-                      href="javascript:void(0)"
-                    >
-                      <span class="fs-sm fw-medium">Inbox</span>
-                      <span class="badge rounded-pill bg-primary ms-2">3</span>
-                    </a>
                     <RouterLink
                       :to="{ name: 'admin-dashboard' }"
                       class="dropdown-item d-flex align-items-center justify-content-between"
                     >
                       <span class="fs-sm fw-medium">Profile</span>
                     </RouterLink>
-                    <a
-                      class="dropdown-item d-flex align-items-center justify-content-between"
-                      href="javascript:void(0)"
-                    >
-                      <span class="fs-sm fw-medium">Settings</span>
-                    </a>
                   </div>
                   <div role="separator" class="dropdown-divider m-0"></div>
                   <div class="p-2">
