@@ -1,7 +1,7 @@
 <script setup>
-import { reactive, computed } from "vue";
-import { useTemplateStore } from "@/stores/template";
 import { useAuthStore } from "@/stores/auth";
+import { useTemplateStore } from "@/stores/template";
+import { computed, reactive } from "vue";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
@@ -55,9 +55,15 @@ async function onSubmit() {
       >
         <div class="p-4 p-xl-5 flex-grow-1 d-flex align-items-center">
           <div class="w-100">
-            <img src="/assets/media/logo/nra-logo-white.png" alt="" height="60" class="mb-3">
+            <img
+              src="/assets/media/logo/nra-logo-white.png"
+              alt=""
+              height="60"
+              class="mb-3"
+            />
             <p class="text-white-75 me-xl-4 mt-2">
-              "Established in 2007 specialized/engaged in the outsourcing service agency, 14 years company spread over 10 controlling areas"
+              "Established in 2007 specialized/engaged in the outsourcing
+              service agency, 14 years company spread over 10 controlling areas"
             </p>
           </div>
         </div>
@@ -80,7 +86,12 @@ async function onSubmit() {
           <div class="w-100">
             <!-- Header -->
             <div class="text-center mb-3">
-              <img src="/assets/media/logo/nra-logo-color.png" alt="" height="50" class="mb-3">
+              <img
+                src="/assets/media/logo/nra-logo-color.png"
+                alt=""
+                height="50"
+                class="mb-3"
+              />
               <h2 class="fw-bold">Log In</h2>
             </div>
             <!-- END Header -->
@@ -135,7 +146,7 @@ async function onSubmit() {
                     <div class="w-100">
                       <button
                         type="submit"
-                        class="btn btn-lg btn-alt-primary w-100"
+                        class="btn btn-lg btn-success text-white w-100"
                       >
                         <template v-if="state.isLoading">Loading...</template>
                         <template v-else>

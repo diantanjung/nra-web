@@ -1,5 +1,5 @@
 <script setup>
-import { reports } from "@/api/survey";
+import { downloadReport, reports } from "@/api/survey";
 import { useTemplateStore } from "@/stores/template";
 import {
   ArcElement,
@@ -58,7 +58,11 @@ const chartOptions = computed(() => [
   },
   { id: "planogram", title: "Planogram", type: "pie" },
   { id: "share_of_space", title: "Secure Share of Space", type: "pie" },
-  { id: "daily_inventory", title: "Daily Inventory Update", type: "bar" },
+  {
+    id: "daily_inventory",
+    title: "Daily Inventory Update (Stock)",
+    type: "bar",
+  },
 ]);
 
 const chartOptionsPercentage = computed(() => ({
@@ -144,10 +148,15 @@ const chartOptionsNumber = computed(() => ({
       datalabels: {
         color: "#fff",
         formatter: (value, ctx) => {
-          if(ctx.chart.data.labels[ctx.dataIndex] != "TOTAL") return value;
-          const chart = state.charts.find(ch => ch.id == "on_shelf_availability")
-          if(!chart) return value;
-          const dataset = ctx.dataset.label == 'On Shelf' ? chart.data.data_true : chart.data.data_false;
+          if (ctx.chart.data.labels[ctx.dataIndex] != "TOTAL") return value;
+          const chart = state.charts.find(
+            (ch) => ch.id == "on_shelf_availability"
+          );
+          if (!chart) return value;
+          const dataset =
+            ctx.dataset.label == "On Shelf"
+              ? chart.data.data_true
+              : chart.data.data_false;
           const data = dataset[dataset.length - 1].origin;
           return data;
         },
@@ -170,20 +179,20 @@ const state = reactive({
   charts: [],
   dateRange: `${moment()
     .subtract(7, "days")
-    .format("YYYY-MM-DD")} - ${moment().format("YYYY-MM-DD")}`,
+    .format("YYYY-MM-DD")} s/d ${moment().format("YYYY-MM-DD")}`,
 });
 
 const displayDateRange = computed(() => {
-  const dates = state.dateRange.split(" - ");
+  const dates = state.dateRange.split(" s/d ");
   const start_date = moment(dates[0]).format("DD-MM-YYYY");
   const end_date = moment(dates[1]).format("DD-MM-YYYY");
-  return `${start_date} - ${end_date}`;
+  return `${start_date} s/d ${end_date}`;
 });
 
 async function getReports(isFirstTime = false) {
   const loader = isFirstTime ? "pageLoader" : "headerLoader";
   templateStore[loader]({ mode: "on" });
-  const dates = state.dateRange.split(" - ");
+  const dates = state.dateRange.split(" s/d ");
   const { data: chartValues } = await reports({
     start_date: moment(dates[0]).format("YYYY-MM-DD"),
     end_date: moment(dates[1]).format("YYYY-MM-DD"),
@@ -195,16 +204,18 @@ async function getReports(isFirstTime = false) {
     const data = chartValues[chart];
     let props = {};
 
-    if(chart == "on_shelf_availability") {
+    if (chart == "on_shelf_availability") {
       const items = data.data_true.length - 1;
-      data.data_true = data.data_true
-        .map(d => {
-          return d.label == "TOTAL" ? {...d, origin: d.total, total: Math.round(d.total / items)} : d
-        })
-      data.data_false = data.data_false
-        .map(d => {
-          return d.label == "TOTAL" ? {...d, origin: d.total, total: Math.round(d.total / items)} : d
-        })
+      data.data_true = data.data_true.map((d) => {
+        return d.label == "TOTAL"
+          ? { ...d, origin: d.total, total: Math.round(d.total / items) }
+          : d;
+      });
+      data.data_false = data.data_false.map((d) => {
+        return d.label == "TOTAL"
+          ? { ...d, origin: d.total, total: Math.round(d.total / items) }
+          : d;
+      });
     }
     if (chart == "chiller_condition") {
       props = {
@@ -256,8 +267,22 @@ async function getReports(isFirstTime = false) {
   templateStore[loader]({ mode: "off" });
 }
 
+async function getDownloadReport() {
+  const dates = state.dateRange.split(" s/d ");
+  const res = await downloadReport({
+    start_date: moment(dates[0]).format("YYYY-MM-DD"),
+    end_date: moment(dates[1]).format("YYYY-MM-DD"),
+  });
+
+  window.open(res.data.file_url, "_blank");
+}
+
 function handleFilter() {
   getReports(false);
+}
+
+function handleDownload() {
+  getDownloadReport();
 }
 
 const handleChartOptionChange = async (type) => {
@@ -279,11 +304,19 @@ onMounted(async () => {
 </style>
 
 <template>
-  <BasePageHeading title="Report" :subtitle="displayDateRange">
+  <BasePageHeading title="Report" :subtitle="`🗓️  ${displayDateRange}`">
     <template #extra>
       <button
         type="button"
-        class="btn btn-info"
+        class="btn btn-success text-white"
+        @click="handleDownload"
+      >
+        <i class="fa fa-download opacity-50 me-1"></i>
+        Download Report
+      </button>
+      <button
+        type="button"
+        class="btn btn-alt-info ms-2"
         v-click-ripple
         data-bs-toggle="modal"
         data-bs-target="#modal-block-normal"
@@ -291,30 +324,6 @@ onMounted(async () => {
         <i class="fa fa-filter opacity-50 me-1"></i>
         Filter
       </button>
-      <div class="btn-group ms-3" role="group" aria-label="Horizontal Primary">
-        <button
-          type="button"
-          :class="
-            state.selectedChartOption == 'percentage'
-              ? 'btn btn-alt-primary'
-              : 'btn btn-alt-primary-outline'
-          "
-          @click="handleChartOptionChange('percentage')"
-        >
-          % Persen
-        </button>
-        <button
-          type="button"
-          :class="
-            state.selectedChartOption == 'number'
-              ? 'btn btn-alt-primary'
-              : 'btn btn-alt-primary-outline'
-          "
-          @click="handleChartOptionChange('number')"
-        >
-          # Angka
-        </button>
-      </div>
     </template>
   </BasePageHeading>
 
@@ -343,6 +352,38 @@ onMounted(async () => {
         </BaseBlock>
       </div>
     </div>
+
+    <!-- floating chart toggles -->
+    <div class="position-fixed" style="bottom: 2%; right: calc(52% - 250px)">
+      <div
+        class="btn-group shadow p-1 mb-5 bg-white rounded"
+        role="group"
+        aria-label="Horizontal Primary"
+      >
+        <button
+          type="button"
+          :class="
+            state.selectedChartOption == 'percentage'
+              ? 'btn btn-alt-primary'
+              : 'btn btn-alt-primary-outline'
+          "
+          @click="handleChartOptionChange('percentage')"
+        >
+          % Persen
+        </button>
+        <button
+          type="button"
+          :class="
+            state.selectedChartOption == 'number'
+              ? 'btn btn-alt-primary'
+              : 'btn btn-light'
+          "
+          @click="handleChartOptionChange('number')"
+        >
+          # Angka
+        </button>
+      </div>
+    </div>
   </div>
 
   <div
@@ -355,7 +396,7 @@ onMounted(async () => {
   >
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <BaseBlock title="Opsi Filter" transparent class="mb-0">
+        <BaseBlock title="Filter Report Data" transparent class="mb-0">
           <template #options>
             <button
               type="button"
@@ -380,7 +421,7 @@ onMounted(async () => {
                   maxDate: 'today',
                   altInput: true,
                   altFormat: 'd-m-Y',
-                  locale: { rangeSeparator: ' - ' },
+                  locale: { rangeSeparator: ' s/d ' },
                 }"
               />
               <h5 class="mt-4 mb-2">Daftar Chart</h5>
@@ -408,18 +449,18 @@ onMounted(async () => {
             <div class="block-content block-content-full text-end bg-body">
               <button
                 type="button"
-                class="btn btn-sm btn-alt-secondary me-1"
+                class="btn btn-alt-secondary me-1"
                 data-bs-dismiss="modal"
               >
                 Tutup
               </button>
               <button
                 type="button"
-                class="btn btn-sm btn-info"
+                class="btn btn-success text-white"
                 data-bs-dismiss="modal"
                 @click="handleFilter"
               >
-                Filter
+                Terapkan Filter
               </button>
             </div>
           </template>

@@ -1,9 +1,9 @@
 <script setup>
-import { useTemplateStore } from "@/stores/template";
-import { useAuthStore } from "@/stores/auth";
+import BaseNavigation from "@/components/BaseNavigation.vue";
 import menu from "@/data/menu";
 import BaseLayout from "@/layouts/BaseLayout.vue";
-import BaseNavigation from "@/components/BaseNavigation.vue";
+import { useAuthStore } from "@/stores/auth";
+import { useTemplateStore } from "@/stores/template";
 import { computed } from "vue";
 
 // Main templateStore
@@ -22,11 +22,9 @@ templateStore.setLayout({
 templateStore.headerStyle({ mode: "light" });
 templateStore.mainContent({ mode: "narrow" });
 
-
 const nodes = computed(() => {
-  return menu.filter(side => side.roles.includes(authStore.auth.role_id));
+  return menu.filter((side) => side.roles.includes(authStore.auth.role_id));
 });
-
 </script>
 
 <template>
@@ -44,9 +42,7 @@ const nodes = computed(() => {
     <!-- Using the available v-slot, we can override the default Sidebar content from layouts/partials/Sidebar.vue -->
     <template #sidebar-content>
       <div class="content-side">
-        <BaseNavigation
-          :nodes="nodes"
-        />
+        <BaseNavigation :nodes="nodes" />
       </div>
     </template>
     <!-- END Sidebar Content -->
@@ -70,7 +66,7 @@ const nodes = computed(() => {
         class="btn btn-sm btn-alt-secondary me-2 d-none d-lg-inline-block"
         @click="templateStore.sidebarMini({ mode: 'toggle' })"
       >
-        <i class="fa fa-fw fa-ellipsis-v"></i>
+        <i class="fa fa-fw fa-bars"></i>
       </button>
       <!-- END Toggle Mini Sidebar -->
     </template>
