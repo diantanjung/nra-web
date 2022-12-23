@@ -107,13 +107,16 @@ const chartOptionsPercentage = computed(() => ({
       datalabels: {
         color: "#fff",
         formatter: (value, ctx) => {
-          let sum = 0;
-          let dataArr = ctx.chart.data.datasets[0].data;
-          dataArr.map((data) => {
-            sum += data;
-          });
-          let percentage = ((value * 100) / sum).toFixed(2) + "%";
-          return percentage;
+          const chart = state.charts.find(
+            (ch) => ch.id == "on_shelf_availability"
+          );
+          const dataset =
+            ctx.dataset.label == "On Shelf"
+              ? chart.data.data_true
+              : chart.data.data_false;
+
+          const data = dataset.find(set => set.label === ctx.chart.data.labels[ctx.dataIndex]);
+          return data ? data.value : '';
         },
       },
     },
@@ -267,7 +270,7 @@ async function getReports(isFirstTime = false) {
   templateStore[loader]({ mode: "off" });
 }
 
-async function getDownloadReport() {
+async function handleDownloadClick() {
   const dates = state.dateRange.split(" s/d ");
   const res = await downloadReport({
     start_date: moment(dates[0]).format("YYYY-MM-DD"),
@@ -279,10 +282,6 @@ async function getDownloadReport() {
 
 function handleFilter() {
   getReports(false);
-}
-
-function handleDownload() {
-  getDownloadReport();
 }
 
 const handleChartOptionChange = async (type) => {
@@ -309,7 +308,7 @@ onMounted(async () => {
       <button
         type="button"
         class="btn btn-success text-white"
-        @click="handleDownload"
+        @click="handleDownloadClick"
       >
         <i class="fa fa-download opacity-50 me-1"></i>
         Download Report
