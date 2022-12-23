@@ -1,41 +1,55 @@
-<script setup></script>
+<script setup>
+import TableComponent from "@/components/Table";
+import { reactive } from "vue";
+
+
+// Helper variables
+const cols = reactive([
+  {
+    name: "Name",
+    field: "name",
+    sort: "",
+  },
+  {
+    name: "Email",
+    field: "email",
+    sort: "",
+  },
+  {
+    name: "Company",
+    field: "company",
+    sort: "",
+  },
+  {
+    name: "Birth date",
+    field: "birthdate",
+    sort: "",
+  },
+]);
+</script>
 
 <template>
-  <BasePageHeading title="Dashboard" subtitle="Welcome Admin!">
+  <!-- Hero -->
+  <BasePageHeading title="Daftar User">
     <template #extra>
-      <button type="button" class="btn btn-alt-primary" v-click-ripple>
-        <i class="fa fa-plus opacity-50 me-1"></i>
-        New Project
-      </button>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb breadcrumb-alt">
+          <li class="breadcrumb-item">
+            <a class="link-fx" href="javascript:void(0)">Tables</a>
+          </li>
+          <li class="breadcrumb-item" aria-current="page">Helpers</li>
+        </ol>
+      </nav>
     </template>
   </BasePageHeading>
+  <!-- END Hero -->
 
+  <!-- Page Content -->
   <div class="content">
-    <div class="row items-push">
-      <div class="col-sm-6 col-xl-4">
-        <BaseBlock title="Block" class="h-100 mb-0">
-          <p>
-            This is a backend layout based page which you can use as a base for
-            your backend pages.
-          </p>
-          <p>
-            We created a custom Backend layout variation (
-            <code>layouts/variations/BackendStarter.vue</code>) to showcase how
-            easily you can add extra layout variations and override the default
-            content of the partial elements.
-          </p>
-        </BaseBlock>
-      </div>
-      <div class="col-sm-6 col-xl-4">
-        <BaseBlock title="Block" class="h-100 mb-0">
-          <p>...</p>
-        </BaseBlock>
-      </div>
-      <div class="col-xl-4">
-        <BaseBlock title="Block" class="h-100 mb-0">
-          <p>...</p>
-        </BaseBlock>
-      </div>
-    </div>
+    <TableComponent
+      endpoint="users"
+      :cols="cols"
+    />
   </div>
+  <!-- END Page Content -->
 </template>
