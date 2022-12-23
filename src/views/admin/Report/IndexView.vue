@@ -329,7 +329,7 @@ onMounted(async () => {
 
   <div class="content">
     <div v-if="chartListComponent" class="row items-push">
-      <div class="col-12" v-for="chart in state.charts" :key="chart">
+      <div class="col-12 col-md-6" v-for="chart in state.charts" :key="chart">
         <BaseBlock :title="chart.title" class="h-100 mb-0 pb-3">
           <Pie
             v-if="chart.type == 'pie'"
