@@ -2,28 +2,24 @@
 import TableComponent from "@/components/Table";
 import { reactive } from "vue";
 
-
 // Helper variables
 const cols = reactive([
   {
-    name: "Name",
+    name: "Foto",
     field: "name",
-    sort: "",
+    content: (row) => `<img src="${row.photo}" />`,
   },
   {
-    name: "Email",
-    field: "email",
-    sort: "",
+    name: "Nama",
+    field: "name",
   },
   {
-    name: "Company",
-    field: "company",
-    sort: "",
+    name: "Hak Akses",
+    field: "role_name",
   },
   {
-    name: "Birth date",
-    field: "birthdate",
-    sort: "",
+    name: "Client",
+    field: "client_name",
   },
 ]);
 </script>
@@ -32,24 +28,35 @@ const cols = reactive([
   <!-- Hero -->
   <BasePageHeading title="Daftar User">
     <template #extra>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb breadcrumb-alt">
-          <li class="breadcrumb-item">
-            <a class="link-fx" href="javascript:void(0)">Tables</a>
-          </li>
-          <li class="breadcrumb-item" aria-current="page">Helpers</li>
-        </ol>
-      </nav>
+      <button
+        type="button"
+        class="btn btn-primary text-white"
+        @click="handleDownloadClick"
+      >
+        <i class="fa fa-add opacity-50 me-1"></i>
+        Tambah User
+      </button>
     </template>
   </BasePageHeading>
   <!-- END Hero -->
 
   <!-- Page Content -->
   <div class="content">
-    <TableComponent
-      endpoint="users"
-      :cols="cols"
-    />
+    <TableComponent endpoint="users" :cols="cols">
+      <template #actions>
+        <div class="btn-group">
+          <button type="button" class="btn btn-alt-info">
+            <i class="fa fa-fw fa-pencil-alt"></i>
+          </button>
+          <button type="button" class="btn btn-alt-success">
+            <i class="fa fa-fw fa-list"></i>
+          </button>
+          <button type="button" class="btn btn-alt-danger">
+            <i class="fa fa-fw fa-trash"></i>
+          </button>
+        </div>
+      </template>
+    </TableComponent>
   </div>
   <!-- END Page Content -->
 </template>

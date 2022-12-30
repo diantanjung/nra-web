@@ -1,11 +1,12 @@
 <script setup>
 import request from "@/utils/request";
-import { reactive, computed, ref, nextTick, onMounted } from "vue";
+import { reactive, ref, nextTick, onMounted } from "vue";
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
-import { Dataset, DatasetItem, DatasetSearch, DatasetShow } from "vue-dataset";
+import { Dataset, DatasetItem, DatasetShow } from "vue-dataset";
 
 import DatasetPager from "./PagerComponent.vue";
 import DatasetInfo from "./InfoComponent.vue";
+import DatasetSearch from "./SearchComponent.vue";
 
 
 const blockRef = ref(null);
@@ -44,16 +45,6 @@ const params = reactive({
   order_dir: "desc",
 });
 
-// Sort by functionality
-const sortBy = computed(() => {
-  return props.cols.reduce((acc, o) => {
-    if (o.sort) {
-      o.sort === "asc" ? acc.push(o.field) : acc.push("-" + o.field);
-    }
-    return acc;
-  }, []);
-});
-
 // On sort th click
 function onSort(event, i) {
   let toset;
@@ -77,6 +68,11 @@ function onSort(event, i) {
     toset = "desc";
   }
   sortEl.sort = toset;
+
+  const column = props.cols[i];
+  params.order_by = column.field;
+  params.order_dir = toset;
+  fetch();
 }
 
 const fetch = async () => {
@@ -111,6 +107,32 @@ function handleDatasetPagerChange(item) {
   params.page = item;
   fetch();
 }
+
+function debounce(func, wait, immediate) {
+  let timeout
+
+  return function () {
+    const context = this
+    const args = arguments
+
+    clearTimeout(timeout)
+    if (immediate && !timeout) {
+      func.apply(context, args)
+    }
+    timeout = setTimeout(function () {
+      timeout = null
+      if (!immediate) {
+        func.apply(context, args)
+      }
+    }, wait)
+  }
+}
+
+const handleSearch = debounce((value) => {
+  params.keyword = value;
+  fetch();
+}, 500)
+
 onMounted(() => {
   fetch();
 });
@@ -122,8 +144,6 @@ onMounted(() => {
       ref="tableRef"
       :key="tableKey"
       :ds-data="state.data"
-      :ds-sortby="sortBy"
-      :ds-search-in="['name', 'email', 'company', 'birthdate']"
     >
       <div class="row">
         <div id="datasetLength" class="col-md-8 py-2">
@@ -133,7 +153,7 @@ onMounted(() => {
           />
         </div>
         <div class="col-md-4 py-2">
-          <DatasetSearch ds-search-placeholder="Search..." :wait="1000" />
+          <DatasetSearch ds-search-placeholder="Search..." :wait="500" @search="handleSearch" />
         </div>
       </div>
       <hr />
@@ -152,16 +172,29 @@ onMounted(() => {
                   >
                     {{ th.name }} <i class="gg-select float-end"></i>
                   </th>
+                  <th scope="col">Aksi</th>
                 </tr>
               </thead>
               <DatasetItem tag="tbody" class="fs-sm">
                 <template #default="{ row, rowIndex }">
                   <tr>
                     <th scope="row">{{ rowIndex + 1 }}</th>
-                    <td style="min-width: 150px">{{ row.name }}</td>
-                    <td>{{ row.email }}</td>
-                    <td style="min-width: 150px">{{ row.company }}</td>
-                    <td style="min-width: 150px">{{ row.birthdate }}</td>
+                    <td
+                      v-for="(col, index) in props.cols"
+                      :key="`${rowIndex}-${index}`"
+                    >
+                      <template v-if="'content' in col">
+                        <div v-html="col.content(row)"></div>
+                      </template>
+                      <template v-else>
+                        <div style="min-width: 150px">
+                          {{ row[col.field] }}
+                        </div>
+                      </template>
+                    </td>
+                    <td style="min-width: 150px">
+                      <slot name="actions" :row={row}></slot>
+                    </td>
                   </tr>
                 </template>
               </DatasetItem>
