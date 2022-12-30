@@ -353,7 +353,7 @@ onMounted(async () => {
     </div>
 
     <!-- floating chart toggles -->
-    <div class="position-fixed" style="bottom: 2%; right: calc(52% - 250px)">
+    <div class="d-flex align-items-center justify-content-center" style="position: sticky; bottom: 2%;">
       <div
         class="btn-group shadow p-1 mb-5 bg-white rounded"
         role="group"
