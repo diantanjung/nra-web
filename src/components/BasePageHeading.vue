@@ -1,4 +1,7 @@
 <script setup>
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 // Component properties
 defineProps({
   title: {
@@ -9,6 +12,10 @@ defineProps({
     type: String,
     description: "The subtitle of page heading section",
   },
+  withBack: {
+    type: Boolean,
+    default: false
+  }
 });
 </script>
 
@@ -29,8 +36,20 @@ defineProps({
               {{ subtitle }}
             </h2>
           </div>
-          <div v-if="$slots.extra" class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3">
-            <slot name="extra"></slot>
+          <div v-if="$slots.extra || withBack" class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3">
+            <template v-if="withBack">
+              <button
+                type="button"
+                class="btn btn-alt-secondary"
+                @click="router.go(-1)"
+              >
+                <i class="fa fa-arrow-left-long opacity-50 me-1"></i>
+                Kembali
+              </button>
+            </template>
+            <template v-else>
+              <slot name="extra"></slot>
+            </template>
           </div>
         </div>
       </slot>

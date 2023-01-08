@@ -1,13 +1,16 @@
 <script setup>
 import TableComponent from "@/components/Table";
 import { reactive } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 // Helper variables
 const cols = reactive([
   {
     name: "Foto",
     field: "name",
-    content: (row) => `<img src="${row.photo}" />`,
+    content: (row) => `<img src="${row.photo}" height="50" />`,
   },
   {
     name: "Nama",
@@ -31,7 +34,7 @@ const cols = reactive([
       <button
         type="button"
         class="btn btn-primary text-white"
-        @click="handleDownloadClick"
+        @click="router.push('/admin/master/user/create')"
       >
         <i class="fa fa-add opacity-50 me-1"></i>
         Tambah User

@@ -8,7 +8,7 @@ import BaseNavigation from "@/components/BaseNavigation.vue";
 import SimpleBar from "simplebar";
 
 // Grab menu navigation arrays
-import menu from "@/data/menu";
+import menu from "@/router/menu";
 
 const navigation = menu.main;
 

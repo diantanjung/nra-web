@@ -9,17 +9,18 @@ import LayoutBackend from "@/layouts/variations/BackendStarter.vue";
 import LayoutSimple from "@/layouts/variations/Simple.vue";
 
 
+// * ROUTES
+import ReportRoutes from "./report";
+import MasterDataRoutes from "./master-data";
+
 // * AUTH
 const Login = () => import("@/views/auth/LogInView.vue");
 
 // * DASHBOARD
 const Dashboard = () => import("@/views/admin/DashboardView.vue");
 
-// *USER
-const UserIndex = () => import("@/views/admin/User/IndexView.vue");
 
-// * REPORT
-const ReportIndex = () => import("@/views/admin/Report/IndexView.vue");
+
 
 // Set all routes
 const routes = [
@@ -45,22 +46,8 @@ const routes = [
         name: "admin-dashboard",
         component: Dashboard,
       },
-      {
-        path: "report",
-        name: "admin-report",
-        component: ReportIndex,
-      },
-      {
-        path: "master",
-        redirect: "/master/user",
-        children: [
-          {
-            path: "user",
-            name: "master-user-index",
-            component: UserIndex,
-          },
-        ],
-      },
+      ...ReportRoutes,
+      ...MasterDataRoutes
     ],
   },
 ];

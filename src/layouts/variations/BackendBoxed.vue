@@ -7,7 +7,7 @@ import BaseNavigation from "@/components/BaseNavigation.vue";
 
 
 // Grab menu navigation arrays
-import menu from "@/data/menu";
+import menu from "@/router/menu";
 
 const navigation = menu.boxed;
 

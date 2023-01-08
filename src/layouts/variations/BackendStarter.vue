@@ -1,6 +1,6 @@
 <script setup>
 import BaseNavigation from "@/components/BaseNavigation.vue";
-import menu from "@/data/menu";
+import menu from "@/router/menu";
 import BaseLayout from "@/layouts/BaseLayout.vue";
 import { useAuthStore } from "@/stores/auth";
 import { useTemplateStore } from "@/stores/template";

@@ -7,7 +7,7 @@ import BaseNavigation from "@/components/BaseNavigation.vue";
 import BaseLayout from "@/layouts/BaseLayout.vue";
 
 // Grab menu navigation arrays
-import menu from "@/data/menu";
+import menu from "@/router/menu";
 
 const navigation = menu.main;
 

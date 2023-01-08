@@ -15,6 +15,13 @@ export function info() {
   });
 }
 
+export function RoleList() {
+  return request({
+    url: 'auth/roles',
+    method: 'get'
+  });
+}
+
 export function logout() {
   return request({
     url: 'auth',
