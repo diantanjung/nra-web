@@ -46,9 +46,9 @@ const cols = reactive([
   <!-- Page Content -->
   <div class="content">
     <TableComponent endpoint="users" :cols="cols">
-      <template #actions>
+      <template #actions="{ row }">
         <div class="btn-group">
-          <button type="button" class="btn btn-alt-info">
+          <button type="button" class="btn btn-alt-info" @click="router.push(`/admin/master/user/edit/${row.id}`)">
             <i class="fa fa-fw fa-pencil-alt"></i>
           </button>
           <button type="button" class="btn btn-alt-success">

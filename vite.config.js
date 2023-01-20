@@ -11,11 +11,7 @@ export default defineConfig({
       mode: "development",
       registerType: "autoUpdate",
       cleanupOutdatedCaches: false,
-      base: "/",
-      srcDir: "src",
-      filename: "sw.js",
       includeAssets: ["/favicon.png"],
-      strategies: "injectManifest",
       manifest: {
         name: "NRA - Natari Remote Attendance",
         short_name: "NRA",

@@ -193,7 +193,7 @@ onMounted(() => {
                       </template>
                     </td>
                     <td style="min-width: 150px">
-                      <slot name="actions" :row={row}></slot>
+                      <slot name="actions" v-bind={row}></slot>
                     </td>
                   </tr>
                 </template>
