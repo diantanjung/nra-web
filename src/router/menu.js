@@ -15,22 +15,124 @@ export default [
     roles: ALL,
   },
   {
+    name: 'Attendance',
+    to: 'admin-attendance',
+    icon: 'si si-user-following',
+    roles: ALL,
+  },
+  {
+    name: 'Approval',
+    to: 'admin-approval',
+    icon: 'si si-check',
+    roles: ALL,
+  },
+  {
+    name: 'Log Book',
+    to: 'admin-log-book',
+    icon: 'si si-notebook',
+    roles: ALL,
+  },
+  {
+    name: 'Announcement',
+    to: 'admin-announcement',
+    icon: 'si si-feed',
+    roles: ALL,
+  },
+  {
+    name: "Surveyor",
+    heading: true,
+    roles: [ADMIN]
+  },
+  {
+    name: 'Survey Data',
+    to: 'admin-survey-data',
+    icon: 'si si-note',
+    roles: ALL,
+  },
+  {
+    name: 'Schedule',
+    to: 'admin-schedule',
+    icon: 'si si-calendar',
+    roles: ALL,
+  },
+  {
     name: 'Report',
     to: 'admin-report',
     icon: 'si si-pie-chart',
     roles: [ADMIN]
   },
+  
   {
-    name: "Data Master",
-    icon: "fa fa-database",
-    subActivePaths: "/admin/master",
-    roles: [ADMIN],
-    sub: [
-      {
-        name: "User",
-        to: "master-user-index",
-        roles: [ADMIN]
-      }
-    ],
+    name: 'Import',
+    to: 'admin-import',
+    icon: 'si si-cloud-upload',
+    roles: ALL,
+  },
+  
+  {
+    name: 'Store',
+    to: 'admin-store',
+    icon: 'fa fa-store',
+    roles: ALL,
+  },
+  
+  {
+    name: 'Product',
+    to: 'admin-product',
+    icon: 'si si-basket',
+    roles: ALL,
+  },
+  {
+    name: "Master",
+    heading: true,
+    roles: [ADMIN]
+  },
+  {
+    name: 'User',
+    to: 'master-user-index',
+    icon: 'si si-users',
+    roles: [ADMIN]
+  },
+  {
+    name: 'Activity Log',
+    to: 'master-activity-log-index',
+    icon: 'si si-clock',
+    roles: [ADMIN]
+  },
+  {
+    name: 'Client',
+    to: 'master-client-index',
+    icon: 'si si-briefcase',
+    roles: [ADMIN]
+  },
+  {
+    name: 'Contract',
+    to: 'master-contract-index',
+    icon: 'si si-docs',
+    roles: [ADMIN]
+  },
+  {
+    name: 'Department',
+    to: 'master-department-index',
+    icon: 'si si-grid',
+    roles: [ADMIN]
+  },
+  {
+    name: 'Area',
+    to: 'master-area-index',
+    icon: 'si si-globe-alt',
+    roles: [ADMIN]
+  },
+  {
+    name: 'Regulation',
+    to: 'master-regulation-index',
+    icon: 'si si-list',
+    roles: [ADMIN]
+  },
+  {
+    name: 'Product Category',
+    to: 'master-product-category-index',
+    icon: 'si si-tag',
+    roles: [ADMIN]
   },
 ]

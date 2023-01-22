@@ -1,0 +1,29 @@
+import UserRoutes from "./user.js";
+import ActivityLogRoutes from "./activity-log";
+import ClientRoutes from "./client.js";
+import ContractRoutes from "./contract.js";
+import DepartmentRoutes from "./department";
+import AreaRoutes from "./area.js";
+import RegulationRoutes from "./regulation.js";
+import ProductCategoryRoutes from "./product-category";
+
+
+
+const routes = [
+  {
+    path: "master",
+    redirect: "/master/user",
+    children: [
+      ...UserRoutes,
+      ...ActivityLogRoutes,
+      ...ClientRoutes,
+      ...ContractRoutes,
+      ...DepartmentRoutes,
+      ...AreaRoutes,
+      ...RegulationRoutes,
+      ...ProductCategoryRoutes
+    ],
+  },
+]
+
+export default routes;

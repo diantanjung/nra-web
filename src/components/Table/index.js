@@ -1,2 +1,4 @@
 import IndexComponent from "./IndexComponent.vue";
-export default IndexComponent;
+export {
+  IndexComponent as TableComponent
+}

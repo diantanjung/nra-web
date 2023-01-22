@@ -10,8 +10,14 @@ import LayoutSimple from "@/layouts/variations/Simple.vue";
 
 
 // * ROUTES
-import ReportRoutes from "./report";
-import MasterDataRoutes from "./master-data";
+import AttendanceRoutes from "./attendance";
+import ApprovalRoutes from "./approval";
+import LogBookRoutes from "./log-book";
+import AnnouncementRoutes from "./announcement";
+
+// * SURVEYOR
+import SurveyorRoutes from "./surveyor/_index";
+import MasterDataRoutes from "./master-data/_index";
 
 // * AUTH
 const Login = () => import("@/views/auth/LogInView.vue");
@@ -46,7 +52,13 @@ const routes = [
         name: "admin-dashboard",
         component: Dashboard,
       },
-      ...ReportRoutes,
+      ...AttendanceRoutes,
+      ...ApprovalRoutes,
+      ...LogBookRoutes,
+      ...AnnouncementRoutes,
+      // * SURVEYOR
+      ...SurveyorRoutes,
+      // * MASTER DATA
       ...MasterDataRoutes
     ],
   },
