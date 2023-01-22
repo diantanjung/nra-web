@@ -1,7 +1,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted, onBeforeUnmount } from "vue";
 import { FormLabel } from "@/components/Form";
-import { required, minLength, email, sameAs } from "@vuelidate/validators";
+import { required, minLength, sameAs } from "@vuelidate/validators";
 import { getJwtToken } from "@/utils/auth";
 import { useToast } from 'vue-toastification'
 import { useRouter, useRoute } from "vue-router";
@@ -22,12 +22,12 @@ const blockRef = ref(null);
 const state = reactive({
   roles: [],
   clients: [],
+  user: null
 });
 
 const form = reactive({
   name: null,
   username: null,
-  email: null,
   phone_number: null,
   password: null,
   confirmPassword: null,
@@ -40,15 +40,12 @@ const rules = computed(() => {
   return {
     name: { required },
     username: { required },
-    email: { required, email },
     client_id: { required },
     phone_number: { required },
     password: {
-      required,
       minLength: minLength(5),
     },
     confirmPassword: {
-      required,
       sameAs: sameAs(form.password),
     },
   };
@@ -63,18 +60,12 @@ async function handleSubmit() {
   if (!result) {
     return;
   }
-
-  const params = {
-    ...form,
-    client_id: form.client_id.id,
-    role_id: form.role_id.id,
-  }
+  const params = { ...form }
   blockRef.value.statusLoading();
-  await UserUpdate(0, params);
+  await UserUpdate(state.user.id, params);
   blockRef.value.statusNormal();
   toast.success("Berhasil Menambah User!");
   router.push('/admin/master/user/create')
-
 }
 
 // Dropzone variables
@@ -84,18 +75,6 @@ const dropzone = ref(null);
 onMounted(async () => {
   blockRef.value.statusLoading();
   const jwtToken = getJwtToken();
-  dropzone.value = new Dropzone("#dropzoneForm", {
-    url: `${import.meta.env.VITE_API_URL}/upload`,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "X-Requested-With": "XMLHttpRequest",
-      Authorization: "Bearer " + jwtToken,
-    },
-  });
-  dropzone.value.on("success", (file, response) => {
-    const { data } = response;
-    form.photo = data.cdn_url;
-  });
 
   // * GET CLIENTS & ROLES
   const { data: dataRoles } = await RoleList();
@@ -103,7 +82,33 @@ onMounted(async () => {
   const { data: dataUser } = await UserDetail(route.params.id);
   state.roles = dataRoles;
   state.clients = dataClients.map(({ id, name }) => ({ id, name }));
-  console.log(dataUser);
+  state.user = dataUser;
+  const { username, name, profile, client_id, photo, role_id } = state.user;
+  form.username = username;
+  form.name = name;
+  form.client_id = client_id
+  form.role_id = role_id
+  form.photo = photo;
+  form.phone_number = profile.phone_number
+
+  dropzone.value = new Dropzone("#dropzoneForm", {
+    url: `${import.meta.env.VITE_API_URL}/upload`,
+    maxFiles: 1,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "X-Requested-With": "XMLHttpRequest",
+      Authorization: "Bearer " + jwtToken,
+    },
+  });
+
+  dropzone.value.on("success", (file, response) => {
+    const { data } = response;
+    form.photo = data.cdn_url;
+  });
+
+  const mockPhoto = { name: photo.split('/')[photo.split('/').length -1], size: 12345 };
+  dropzone.value.options.addedfile.call(dropzone.value, mockPhoto);
+  dropzone.value.options.thumbnail.call(dropzone.value, mockPhoto, photo);
   blockRef.value.statusNormal();
 });
 
@@ -119,12 +124,17 @@ onBeforeUnmount(() => {
 
 @import "dropzone/dist/dropzone.css";
 @import "@/assets/scss/vendor/dropzone";
+
+.dropzone .dz-preview .dz-image img {
+  width: 120px;
+  height: 120px;
+}
 </style>
 
 
 <template>
   <!-- Hero -->
-  <BasePageHeading title="Tambah User" with-back />
+  <BasePageHeading title="Ubah User" with-back />
   <!-- END Hero -->
 
   <!-- Page Content -->
@@ -158,6 +168,7 @@ onBeforeUnmount(() => {
           <FormLabel required>Hak Akses</FormLabel>
           <VueSelect
             v-model="form.role_id"
+            :reduce="prefix => prefix.id"
             :options="state.roles"
             label="name"
             placeholder="Choose a value.."
@@ -167,6 +178,7 @@ onBeforeUnmount(() => {
           <FormLabel required>Client</FormLabel>
           <VueSelect
             v-model="form.client_id"
+            :reduce="prefix => prefix.id"
             :options="state.clients"
             label="name"
             placeholder="Choose a value.."
@@ -185,19 +197,7 @@ onBeforeUnmount(() => {
           />
         </div>
         <div class="mb-4">
-          <FormLabel required>Email</FormLabel>
-
-          <input
-            type="text"
-            id="val-email"
-            class="form-control"
-            :class="{ 'is-invalid': v$.email.$errors.length }"
-            v-model="form.email"
-            @blur="v$.email.$touch"
-          />
-        </div>
-        <div class="mb-4">
-          <FormLabel required>Password</FormLabel>
+          <FormLabel>Password</FormLabel>
 
           <input
             type="password"
@@ -209,7 +209,7 @@ onBeforeUnmount(() => {
           />
         </div>
         <div class="mb-4">
-          <FormLabel required>Konfirmasi Password</FormLabel>
+          <FormLabel>Konfirmasi Password</FormLabel>
           <input
             type="password"
             id="val-confirm-password"
