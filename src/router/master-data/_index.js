@@ -6,6 +6,9 @@ import DepartmentRoutes from "./department";
 import AreaRoutes from "./area.js";
 import RegulationRoutes from "./regulation.js";
 import ProductCategoryRoutes from "./product-category";
+import ContractTypeRoutes from "./contract-type";
+import ArchiveRoutes from "./archive";
+
 
 
 
@@ -21,6 +24,8 @@ const routes = [
       ...DepartmentRoutes,
       ...AreaRoutes,
       ...RegulationRoutes,
+      ...ArchiveRoutes,
+      ...ContractTypeRoutes,
       ...ProductCategoryRoutes
     ],
   },

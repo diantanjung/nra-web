@@ -423,7 +423,7 @@ onMounted(async () => {
                   locale: { rangeSeparator: ' s/d ' },
                 }"
               />
-              <h5 class="mt-4 mb-2">Daftar Chart</h5>
+              <h5 class="mt-4 mb-2">Chart</h5>
               <div class="row items-push">
                 <div
                   class="col-6"

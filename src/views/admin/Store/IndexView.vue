@@ -26,7 +26,7 @@
 
 <template>
   <!-- Hero -->
-  <BasePageHeading title="Daftar Store" />
+  <BasePageHeading title="Store" />
   <!-- END Hero -->
 
   <!-- Page Content -->

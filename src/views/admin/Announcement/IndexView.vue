@@ -26,7 +26,7 @@
 
 <template>
   <!-- Hero -->
-  <BasePageHeading title="Daftar Announcement" />
+  <BasePageHeading title="Announcement" />
   <!-- END Hero -->
 
   <!-- Page Content -->

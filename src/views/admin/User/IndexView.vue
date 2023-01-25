@@ -29,7 +29,7 @@ const cols = reactive([
 
 <template>
   <!-- Hero -->
-  <BasePageHeading title="Daftar User">
+  <BasePageHeading title="User">
     <template #extra>
       <button
         type="button"
@@ -37,7 +37,7 @@ const cols = reactive([
         @click="router.push('/admin/master/user/create')"
       >
         <i class="fa fa-add opacity-50 me-1"></i>
-        Tambah User
+        Tambah Data
       </button>
     </template>
   </BasePageHeading>

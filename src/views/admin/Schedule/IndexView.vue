@@ -26,7 +26,7 @@
 
 <template>
   <!-- Hero -->
-  <BasePageHeading title="Daftar Schedule" />
+  <BasePageHeading title="Schedule" />
   <!-- END Hero -->
 
   <!-- Page Content -->

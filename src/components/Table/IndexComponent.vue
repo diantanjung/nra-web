@@ -76,14 +76,17 @@ function onSort(event, i) {
 }
 
 const fetch = async () => {
-  blockRef.value.statusLoading()
+  // blockRef.value.statusLoading()
   const { data, meta } = await request({
     url: props.endpoint,
     method: "get",
     params: { ...params, ...props.extra },
   });
   state.data = data;
-  state.meta = meta.pagination;
+  state.meta = meta && meta.pagination ? meta.pagination : {
+    total: data.length,
+    total_pages: 1,
+  };
   blockRef.value.statusNormal();
 
   // * RUN ON FIRST CREATED

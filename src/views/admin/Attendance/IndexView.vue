@@ -26,7 +26,7 @@
 
 <template>
   <!-- Hero -->
-  <BasePageHeading title="Daftar Attendance" />
+  <BasePageHeading title="Attendance" />
   <!-- END Hero -->
 
   <!-- Page Content -->

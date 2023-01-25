@@ -130,6 +130,12 @@ export default [
     roles: [ADMIN]
   },
   {
+    name: 'Archive',
+    to: 'master-archive-index',
+    icon: 'si si-folder-alt',
+    roles: [ADMIN]
+  },
+  {
     name: 'Product Category',
     to: 'master-product-category-index',
     icon: 'si si-tag',

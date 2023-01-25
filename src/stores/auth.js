@@ -24,14 +24,16 @@ export const useAuthStore = defineStore({
       return new Promise((resolve, reject) => {
         logout()
           .then(() => {
-            this.auth = null;
-            removeJwtToken();
-            removeToken();
             resolve()
           })
           .catch(error => {
             console.log(error);
             reject();
+          })
+          .finally(() => {
+            this.auth = null;
+            removeJwtToken();
+            removeToken();
           })
       });
       
