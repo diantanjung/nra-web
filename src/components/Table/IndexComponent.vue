@@ -76,7 +76,7 @@ function onSort(event, i) {
 }
 
 const fetch = async () => {
-  // blockRef.value.statusLoading()
+  blockRef.value.statusLoading()
   const { data, meta } = await request({
     url: props.endpoint,
     method: "get",

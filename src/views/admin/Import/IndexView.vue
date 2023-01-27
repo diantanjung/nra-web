@@ -1,51 +1,50 @@
-<script setup>
-// import { TableComponent } from "@/components/Table";
-// import { reactive } from "vue";
+<script setup>onBeforeUnmount
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { getJwtToken } from "@/utils/auth";
+import { useToast } from 'vue-toastification'
 
-// Helper variables
-// const cols = reactive([
-//   {
-//     name: "Foto",
-//     field: "name",
-//     content: (row) => `<img src="${row.photo}" height="50" />`,
-//   },
-//   {
-//     name: "Nama",
-//     field: "name",
-//   },
-//   {
-//     name: "Hak Akses",
-//     field: "role_name",
-//   },
-//   {
-//     name: "Client",
-//     field: "client_name",
-//   },
-// ]);
+import Dropzone from "dropzone";
+
+const dropzone = ref(null);
+const toast = useToast();
+
+onMounted(async () => {
+  const jwtToken = getJwtToken();
+  dropzone.value = new Dropzone("#dropzoneForm", {
+    url: `${import.meta.env.VITE_API_URL}/upload`,
+    acceptedFiles: ".xls,.xlsx",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "X-Requested-With": "XMLHttpRequest",
+      Authorization: "Bearer " + jwtToken,
+    },
+  });
+  dropzone.value.on("success", (file) => {
+    toast.success("Import Data Berhasil!");
+    dropzone.value.removeFile(file)
+  });
+});
+
+// Detroy dropzone instance before leaving the page
+onBeforeUnmount(() => {
+  dropzone.value.destroy();
+});
+
 </script>
+
+<style lang="scss">
+
+@import "dropzone/dist/dropzone.css";
+@import "@/assets/scss/vendor/dropzone";
+</style>
 
 <template>
   <!-- Hero -->
   <BasePageHeading title="Import" />
-  <!-- END Hero -->
-
   <!-- Page Content -->
   <div class="content">
-    <!-- <TableComponent endpoint="users" :cols="cols">
-      <template #actions="{ row }">
-        <div class="btn-group">
-          <button type="button" class="btn btn-alt-info" @click="router.push(`/admin/master/user/edit/${row.id}`)">
-            <i class="fa fa-fw fa-pencil-alt"></i>
-          </button>
-          <button type="button" class="btn btn-alt-success">
-            <i class="fa fa-fw fa-list"></i>
-          </button>
-          <button type="button" class="btn btn-alt-danger">
-            <i class="fa fa-fw fa-trash"></i>
-          </button>
-        </div>
-      </template>
-    </TableComponent> -->
+    <BaseBlock title="Import Data Excel" class="pb-4">
+        <form id="dropzoneForm" class="dropzone"></form>
+    </BaseBlock>
   </div>
-  <!-- END Page Content -->
 </template>
