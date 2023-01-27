@@ -17,7 +17,7 @@ const toast = useToast();
 const router = useRouter();
 const route = useRoute();
 
-const blockRef = ref(null);
+const BlockRef = ref(null);
 
 const state = reactive({
   roles: [],
@@ -61,9 +61,9 @@ async function handleSubmit() {
     return;
   }
   const params = { ...form }
-  blockRef.value.statusLoading();
+  BlockRef.value.statusLoading();
   await UserUpdate(state.user.id, params);
-  blockRef.value.statusNormal();
+  BlockRef.value.statusNormal();
   toast.success("Berhasil Menambah User!");
   router.push('/admin/master/user/create')
 }
@@ -73,7 +73,7 @@ const dropzone = ref(null);
 
 // Init Dropzone when content is loaded
 onMounted(async () => {
-  blockRef.value.statusLoading();
+  BlockRef.value.statusLoading();
   const jwtToken = getJwtToken();
 
   // * GET CLIENTS & ROLES
@@ -109,7 +109,7 @@ onMounted(async () => {
   const mockPhoto = { name: photo.split('/')[photo.split('/').length -1], size: 12345 };
   dropzone.value.options.addedfile.call(dropzone.value, mockPhoto);
   dropzone.value.options.thumbnail.call(dropzone.value, mockPhoto, photo);
-  blockRef.value.statusNormal();
+  BlockRef.value.statusNormal();
 });
 
 // Detroy dropzone instance before leaving the page
@@ -140,7 +140,7 @@ onBeforeUnmount(() => {
   <!-- Page Content -->
   <div class="content">
     <form @submit.prevent="handleSubmit">
-      <BaseBlock content-full ref="blockRef">
+      <BaseBlock content-full ref="BlockRef">
         <h2 class="content-heading border-bottom mb-4 pb-2">Data User</h2>
         <div class="mb-4">
           <FormLabel required>Nama</FormLabel>

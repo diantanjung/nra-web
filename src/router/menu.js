@@ -136,6 +136,12 @@ export default [
     roles: [ADMIN]
   },
   {
+    name: 'Supplier',
+    to: 'master-supplier-index',
+    icon: 'fa fa-truck-fast',
+    roles: [ADMIN]
+  },
+  {
     name: 'Product Category',
     to: 'master-product-category-index',
     icon: 'si si-tag',

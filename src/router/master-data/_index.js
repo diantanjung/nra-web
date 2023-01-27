@@ -8,6 +8,7 @@ import RegulationRoutes from "./regulation.js";
 import ProductCategoryRoutes from "./product-category";
 import ContractTypeRoutes from "./contract-type";
 import ArchiveRoutes from "./archive";
+import SupplierRoutes from "./supplier";
 
 
 
@@ -25,6 +26,7 @@ const routes = [
       ...AreaRoutes,
       ...RegulationRoutes,
       ...ArchiveRoutes,
+      ...SupplierRoutes,
       ...ContractTypeRoutes,
       ...ProductCategoryRoutes
     ],

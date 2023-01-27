@@ -1,35 +1,18 @@
 <script setup>
 import { TableComponent } from "@/components/Table";
 import { reactive } from "vue";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
-
-// Helper variables
 const cols = reactive([
-  {
-    name: "Logo",
-    field: "logo",
-    content: (row) => `<img src="${row.logo}" height="50" />`,
-  },
   {
     name: "Nama",
     field: "name",
-  },
-  {
-    name: "Alamat",
-    field: "address",
-  },
-  {
-    name: "Total Pegawai",
-    field: "total_employee",
-  },
+  }
 ]);
 </script>
 
 <template>
   <!-- Hero -->
-  <BasePageHeading title="Client">
+  <BasePageHeading title="Supplier">
     <!-- <template #extra>
       <button
         type="button"
@@ -45,20 +28,20 @@ const cols = reactive([
 
   <!-- Page Content -->
   <div class="content">
-    <TableComponent endpoint="client" :cols="cols">
-      <template #actions="{ row }">
+    <TableComponent endpoint="supplier" :cols="cols">
+      <!-- <template #actions="{ row }">
         <div class="btn-group">
-          <!-- <button type="button" class="btn btn-alt-info" @click="router.push(`/admin/master/user/edit/${row.id}`)">
+          <button type="button" class="btn btn-alt-info" @click="router.push(`/admin/master/user/edit/${row.id}`)">
             <i class="fa fa-fw fa-pencil-alt"></i>
-          </button> -->
-          <button type="button" class="btn btn-alt-success" @click="router.push({ name: 'master-client-detail', params: { id: row.id }})">
+          </button>
+          <button type="button" class="btn btn-alt-success">
             <i class="fa fa-fw fa-list"></i>
           </button>
-          <!-- <button type="button" class="btn btn-alt-danger">
+          <button type="button" class="btn btn-alt-danger">
             <i class="fa fa-fw fa-trash"></i>
-          </button> -->
+          </button>
         </div>
-      </template>
+      </template> -->
     </TableComponent>
   </div>
   <!-- END Page Content -->

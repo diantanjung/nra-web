@@ -9,7 +9,8 @@ import DatasetInfo from "./InfoComponent.vue";
 import DatasetSearch from "./SearchComponent.vue";
 
 
-const blockRef = ref(null);
+const key = Math.floor(Math.random() * 100) + 1;
+const BlockRef = ref(null);
 const tableRef = ref(null);
 const tableKey = ref(0);
 
@@ -21,6 +22,10 @@ const props = defineProps({
   cols: {
     type: Array,
     description: "Columns for table",
+  },
+  title: {
+    type: String,
+    default: null
   },
   extra: {
     type: Object,
@@ -76,7 +81,7 @@ function onSort(event, i) {
 }
 
 const fetch = async () => {
-  blockRef.value.statusLoading()
+  BlockRef.value.statusLoading()
   const { data, meta } = await request({
     url: props.endpoint,
     method: "get",
@@ -87,16 +92,17 @@ const fetch = async () => {
     total: data.length,
     total_pages: 1,
   };
-  blockRef.value.statusNormal();
+  BlockRef.value.statusNormal();
 
   // * RUN ON FIRST CREATED
   tableKey.value += 1;
   await nextTick();
-  document.querySelectorAll("#datasetLength label").forEach((el) => {
+  document.querySelectorAll(`#datasetLength-${key} label`).forEach((el) => {
     el.remove();
   });
 
-  let selectLength = document.querySelector("#datasetLength select");
+  let selectLength = document.querySelector(`#datasetLength-${key} select`);
+  console.log(selectLength);
   selectLength.classList = "";
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
@@ -142,14 +148,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <BaseBlock content-full ref="blockRef">
+  <BaseBlock :title="props.title" content-full ref="BlockRef">
+    <template #options>
+      <slot name="options"></slot>
+    </template>
     <Dataset
       ref="tableRef"
       :key="tableKey"
       :ds-data="state.data"
     >
       <div class="row">
-        <div id="datasetLength" class="col-md-8 py-2">
+        <div :id="`datasetLength-${key}`" class="col-md-8 py-2">
           <DatasetShow
             :ds-show-entries="params.per_page"
             @change="handleDatasetShowChange"

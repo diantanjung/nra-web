@@ -16,7 +16,7 @@ import useVuelidate from "@vuelidate/core";
 const toast = useToast();
 const router = useRouter();
 
-const blockRef = ref(null);
+const BlockRef = ref(null);
 
 const state = reactive({
   roles: [],
@@ -68,9 +68,9 @@ async function handleSubmit() {
     client_id: form.client_id.id,
     role_id: form.role_id.id,
   }
-  blockRef.value.statusLoading();
+  BlockRef.value.statusLoading();
   await UserCreate(params);
-  blockRef.value.statusNormal();
+  BlockRef.value.statusNormal();
   toast.success("Berhasil Menambah User!");
   router.push('/admin/master/user/create')
 
@@ -81,7 +81,7 @@ const dropzone = ref(null);
 
 // Init Dropzone when content is loaded
 onMounted(async () => {
-  blockRef.value.statusLoading();
+  BlockRef.value.statusLoading();
   const jwtToken = getJwtToken();
   dropzone.value = new Dropzone("#dropzoneForm", {
     url: `${import.meta.env.VITE_API_URL}/upload`,
@@ -101,7 +101,7 @@ onMounted(async () => {
   const { data: dataClients } = await ClientList();
   state.roles = dataRoles;
   state.clients = dataClients.map(({ id, name }) => ({ id, name }));
-  blockRef.value.statusNormal();
+  BlockRef.value.statusNormal();
 });
 
 // Detroy dropzone instance before leaving the page
@@ -127,7 +127,7 @@ onBeforeUnmount(() => {
   <!-- Page Content -->
   <div class="content">
     <form @submit.prevent="handleSubmit">
-      <BaseBlock content-full ref="blockRef">
+      <BaseBlock content-full ref="BlockRef">
         <h2 class="content-heading border-bottom mb-4 pb-2">Data User</h2>
         <div class="mb-4">
           <FormLabel required>Nama</FormLabel>
