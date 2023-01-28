@@ -80,7 +80,11 @@ function onSort(event, i) {
   fetch();
 }
 
-const fetch = async () => {
+const fetch = async (fetch_extra = {}) => {
+  Object.assign(params, {
+    ...params,
+    ...fetch_extra
+  });
   BlockRef.value.statusLoading()
   const { data, meta } = await request({
     url: props.endpoint,
@@ -102,7 +106,6 @@ const fetch = async () => {
   });
 
   let selectLength = document.querySelector(`#datasetLength-${key} select`);
-  console.log(selectLength);
   selectLength.classList = "";
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
@@ -117,34 +120,19 @@ function handleDatasetPagerChange(item) {
   fetch();
 }
 
-function debounce(func, wait, immediate) {
-  let timeout
-
-  return function () {
-    const context = this
-    const args = arguments
-
-    clearTimeout(timeout)
-    if (immediate && !timeout) {
-      func.apply(context, args)
-    }
-    timeout = setTimeout(function () {
-      timeout = null
-      if (!immediate) {
-        func.apply(context, args)
-      }
-    }, wait)
-  }
-}
-
-const handleSearch = debounce((value) => {
+const handleSearch = (value) => {
   params.keyword = value;
   fetch();
-}, 500)
+}
 
 onMounted(() => {
   fetch();
 });
+
+defineExpose({
+  fetch
+})
+
 </script>
 
 <template>

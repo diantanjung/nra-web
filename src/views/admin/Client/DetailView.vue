@@ -1,5 +1,5 @@
 <script setup>
-import { TableComponent } from "@/components/Table";
+import TableComponent from "@/components/Table";
 import { ref, reactive, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { ClientDetail } from "@/api/client";

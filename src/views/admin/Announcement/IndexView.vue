@@ -1,27 +1,26 @@
 <script setup>
-// import { TableComponent } from "@/components/Table";
-// import { reactive } from "vue";
+import TableComponent from "@/components/Table";
+import { reactive } from "vue";
 
 // Helper variables
-// const cols = reactive([
-//   {
-//     name: "Foto",
-//     field: "name",
-//     content: (row) => `<img src="${row.photo}" height="50" />`,
-//   },
-//   {
-//     name: "Nama",
-//     field: "name",
-//   },
-//   {
-//     name: "Hak Akses",
-//     field: "role_name",
-//   },
-//   {
-//     name: "Client",
-//     field: "client_name",
-//   },
-// ]);
+const cols = reactive([
+  {
+    name: "Judul",
+    field: "title",
+  },
+  {
+    name: "Isi",
+    field: "content",
+  },
+  {
+    name: "Status",
+    field: "is_active",
+    content: row => {
+      const bgClass = row.is_active ? 'bg-success-light' : 'bg-danger-light';
+      return `<span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill ${bgClass} text-success">Aktif</span>`
+    }
+  },
+]);
 </script>
 
 <template>
@@ -31,7 +30,7 @@
 
   <!-- Page Content -->
   <div class="content">
-    <!-- <TableComponent endpoint="users" :cols="cols">
+    <TableComponent endpoint="announcement" :cols="cols">
       <template #actions="{ row }">
         <div class="btn-group">
           <button type="button" class="btn btn-alt-info" @click="router.push(`/admin/master/user/edit/${row.id}`)">
@@ -45,7 +44,6 @@
           </button>
         </div>
       </template>
-    </TableComponent> -->
+    </TableComponent>
   </div>
-  <!-- END Page Content -->
 </template>

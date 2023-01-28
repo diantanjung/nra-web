@@ -1,5 +1,5 @@
 <script setup>
-// import { TableComponent } from "@/components/Table";
+// import TableComponent from "@/components/Table";
 // import { reactive } from "vue";
 
 // Helper variables

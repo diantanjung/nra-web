@@ -1,6 +1,6 @@
 <script setup>
 import moment from 'moment';
-import { TableComponent } from "@/components/Table";
+import TableComponent from "@/components/Table";
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 

@@ -4,7 +4,6 @@
     :placeholder="dsSearchPlaceholder"
     class="form-control"
     :value="dsSearch"
-    @input="input($event.target.value)"
     @keyup.enter="input($event.target.value)"
   />
 </template>

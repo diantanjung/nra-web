@@ -413,7 +413,7 @@ onMounted(async () => {
               <FlatPickr
                 id="example-flatpickr-range"
                 class="form-control"
-                placeholder="Select Date Range"
+                placeholder="Pilih rentang tanggal"
                 v-model="state.dateRange"
                 :config="{
                   mode: 'range',
