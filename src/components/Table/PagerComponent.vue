@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-setup-props-destructure -->
 <template>
   <ul class="pagination">
     <li :class="['page-item', disabledPrevious && 'disabled']">
@@ -12,7 +13,7 @@
       </a>
     </li>
     <template v-for="(item, index) in dsPages" :key="index">
-      <li :class="['page-item', item === meta.current_page && 'active', item === morePages && 'disabled']">
+      <li :class="['page-item', item === dsPage && 'active', item === morePages && 'disabled']">
         <a v-if="item !== morePages" class="page-link" href="#" @click.prevent="handlePageChange(item)">
           {{ item }}
         </a>
@@ -36,31 +37,36 @@
 </template>
 
 <script>
+import { MORE_PAGES, createPagingRange } from './helpers'
 import { computed, inject, ref } from 'vue'
+
 export default {
   props: {
     meta: { type: Object }
   },
-  setup(props) {
-    const morePages = ref("...")
-    const dsPage = inject('dsPage')
+  setup(props, context) {
+    const morePages = ref(MORE_PAGES)
+    // eslint-disable-next-line vue/no-setup-props-destructure
+    const dsPage = ref(props.meta.current_page);
     const disabledPrevious = computed(() => dsPage.value === 1)
     const disabledNext = computed(() => dsPage.value === props.meta.total_pages || props.meta.total_pages === 0)
-    const dsPages = Array.from({length: props.meta.total_pages}, (x, i) => i + 1);
+
+    const dsPages = computed(() => {
+      return createPagingRange(props.meta.total_pages, dsPage.value)
+    })
+
+    const handlePageChange = (item) => {
+      context.emit('page-change', item);
+    }
     return {
       datasetI18n: inject('datasetI18n'),
-      setActive: inject('setActive'),
       dsPages,
+      dsPageCount: props.meta.total_pages,
+      handlePageChange,
       dsPage,
       morePages,
       disabledPrevious,
       disabledNext
-    }
-  },
-  methods: {
-    handlePageChange(item) {
-      this.setActive(item);
-      this.$emit('page-change', item);
     }
   }
 }
