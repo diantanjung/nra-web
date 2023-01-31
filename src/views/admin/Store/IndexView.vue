@@ -1,7 +1,9 @@
 <script setup>
 import TableComponent from "@/components/Table";
 import { reactive } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const cols = reactive([
   {
     name: "Nama",
@@ -39,9 +41,9 @@ const cols = reactive([
   <!-- Page Content -->
   <div class="content">
     <TableComponent endpoint="merchant" :cols="cols">
-      <template #actions>
+      <template #actions="{ row }">
         <div class="btn-group">
-          <button type="button" class="btn btn-alt-success">
+          <button type="button" class="btn btn-alt-success" @click="router.push({ name: 'admin-store-detail', params: { id: row.id }})">
             <i class="fa fa-fw fa-list"></i>
           </button>
         </div>
