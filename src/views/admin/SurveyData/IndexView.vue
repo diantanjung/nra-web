@@ -1,51 +1,102 @@
 <script setup>
-// import TableComponent from "@/components/Table";
-// import { reactive } from "vue";
+import moment from "moment";
+import FilterComponent from "./FilterComponent.vue";
+import TableComponent from "@/components/Table";
+import { reactive, ref } from "vue";
 
-// Helper variables
-// const cols = reactive([
-//   {
-//     name: "Foto",
-//     field: "name",
-//     content: (row) => `<img src="${row.photo}" height="50" />`,
-//   },
-//   {
-//     name: "Nama",
-//     field: "name",
-//   },
-//   {
-//     name: "Hak Akses",
-//     field: "role_name",
-//   },
-//   {
-//     name: "Client",
-//     field: "client_name",
-//   },
-// ]);
+const TableRef = ref(null);
+
+const state = reactive({
+  filter: {},
+});
+
+const cols = reactive([
+  {
+    name: "Waktu Tgl",
+    field: "date_time",
+  },
+  {
+    name: "Pegawai",
+    field: "user_name",
+  },
+  {
+    name: "Warung",
+    field: "merchant_name",
+  },
+]);
+
+function handleFilter(params) {
+  state.filter = params;
+  const { merchant_ids, user_ids } = params;
+  const dates = params.dates.split(" s/d ");
+  const fetch_params = {
+    merchant_ids,
+    user_ids,
+    start_date: params.dates != '' ? moment(dates[0]).format("YYYY-MM-DD") : '',
+    end_date: params.dates != '' ? moment(dates[1]).format("YYYY-MM-DD") : ''
+  }
+  debugger;
+  TableRef.value.fetch(fetch_params);
+}
 </script>
 
 <template>
   <!-- Hero -->
-  <BasePageHeading title="Survey Data" />
+  <BasePageHeading title="Survey Data">
+    <template #extra>
+      <button
+        type="button"
+        class="btn btn-alt-info ms-2"
+        v-click-ripple
+        data-bs-toggle="modal"
+        data-bs-target="#schedule-filter-component"
+      >
+        <i class="fa fa-filter opacity-50 me-1"></i>
+        Filter
+      </button>
+    </template>
+  </BasePageHeading>
+
   <!-- END Hero -->
 
   <!-- Page Content -->
   <div class="content">
-    <!-- <TableComponent endpoint="users" :cols="cols">
-      <template #actions="{ row }">
-        <div class="btn-group">
-          <button type="button" class="btn btn-alt-info" @click="router.push(`/admin/master/user/edit/${row.id}`)">
-            <i class="fa fa-fw fa-pencil-alt"></i>
-          </button>
-          <button type="button" class="btn btn-alt-success">
-            <i class="fa fa-fw fa-list"></i>
-          </button>
-          <button type="button" class="btn btn-alt-danger">
-            <i class="fa fa-fw fa-trash"></i>
-          </button>
-        </div>
-      </template>
-    </TableComponent> -->
+    <BaseBlock
+      v-if="Object.keys(state.filter).length !== 0"
+      title="Filter Berdasarkan"
+      content-full
+      btn-option-content
+      mode-content-hide
+    >
+      <table class="table table-striped table-vcenter">
+        <tbody>
+          <tr>
+            <th scope="row" width="160">Tanggal</th>
+            <td>{{ state.filter.dates }}</td>
+          </tr>
+          <tr>
+            <th scope="row" width="160">Pegawai</th>
+            <td>
+              <span v-for="user in state.filter.users" :key="user.id">
+                {{ user.name }},
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" width="160">Warung</th>
+            <td>
+              <span v-for="merchant in state.filter.merchants" :key="merchant.id">
+                {{ merchant.name }},
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </BaseBlock>
+    <TableComponent ref="TableRef" endpoint="survey/schedule" :cols="cols" :extra="state.filter">
+    </TableComponent>
   </div>
+
+  <FilterComponent @submit="handleFilter" />
   <!-- END Page Content -->
 </template>
