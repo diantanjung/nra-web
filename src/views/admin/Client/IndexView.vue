@@ -10,19 +10,23 @@ const cols = reactive([
   {
     name: "Logo",
     field: "logo",
+    sortable: false,
     content: (row) => `<img src="${row.logo}" height="50" />`,
   },
   {
     name: "Nama",
     field: "name",
+    sortable: false,
   },
   {
     name: "Alamat",
     field: "address",
+    sortable: false,
   },
   {
     name: "Total Pegawai",
     field: "total_employee",
+    sortable: false,
   },
 ]);
 </script>

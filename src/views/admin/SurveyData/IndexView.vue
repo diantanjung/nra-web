@@ -27,6 +27,7 @@ const cols = reactive([
   {
     name: "Status",
     field: "status_label",
+    order_by: "status",
     content: row => {
       const bgClass = ['bg-warning', 'bg-success', 'bg-danger'][row.status];
       return `<span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill ${bgClass}-light text-success">${row.status_label}</span>`

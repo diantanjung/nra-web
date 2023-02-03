@@ -5,11 +5,12 @@ import { reactive } from "vue";
 const cols = reactive([
   {
     name: "Nama",
-    field: "name"
+    field: "name",
   },
   {
     name: "Kategori Induk",
     field: "parent_label",
+    order_by: "parent_id"
   }
 ]);
 </script>

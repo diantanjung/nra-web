@@ -11,14 +11,14 @@ const cols = reactive([
   },
   {
     name: "Kontak",
-    field: "role_name",
+    field: "contact_name",
     content: row => {
       return `<span>${row.contact_name}</span><br><span><b>+${row.contact_number}</b></span>`
     }
   },
   {
     name: "Kota",
-    field: "name",
+    field: "city_id",
     content: row => {
       const locationArr = row.full_address.split(', ');
       const city = locationArr[locationArr.length - 2];

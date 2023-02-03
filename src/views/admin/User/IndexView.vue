@@ -19,10 +19,12 @@ const cols = reactive([
   {
     name: "Hak Akses",
     field: "role_name",
+    order_by: "role_id"
   },
   {
     name: "Client",
     field: "client_name",
+    order_by: "client_id"
   },
 ]);
 </script>

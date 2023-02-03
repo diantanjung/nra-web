@@ -8,11 +8,6 @@ import { reactive } from "vue";
 // Helper variables
 const cols = reactive([
   {
-    name: "Foto",
-    field: "name",
-    content: (row) => `<img src="${row.photo}" height="50" />`,
-  },
-  {
     name: "SKU",
     field: "sku",
   },
@@ -23,10 +18,12 @@ const cols = reactive([
   {
     name: "Kategori",
     field: "category_name",
+    order_by: "category_id"
   },
   {
     name: "Supplier",
     field: "supplier_name",
+    order_by: "supplier_id"
   },
 ]);
 </script>

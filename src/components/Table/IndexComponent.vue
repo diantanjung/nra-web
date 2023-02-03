@@ -75,7 +75,7 @@ function onSort(event, i) {
   sortEl.sort = toset;
 
   const column = props.cols[i];
-  params.order_by = column.field;
+  params.order_by = column.order_by || column.field;
   params.order_dir = toset;
   fetch();
 }
@@ -164,14 +164,21 @@ defineExpose({
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th
+                  <template
                     v-for="(th, index) in props.cols"
                     :key="th.field"
-                    :class="['sort', th.sort]"
-                    @click="onSort($event, index)"
                   >
-                    {{ th.name }} <i class="gg-select float-end"></i>
-                  </th>
+                    <th v-if="th.sortable == false">
+                      {{ th.name }}
+                    </th>
+                    <th
+                      v-else
+                      :class="['sort', th.sort]"
+                      @click="onSort($event, index)"
+                    >
+                      {{ th.name }} <i class="gg-select float-end"></i>
+                    </th>
+                  </template>
                   <th scope="col">Aksi</th>
                 </tr>
               </thead>

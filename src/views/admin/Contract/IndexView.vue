@@ -16,7 +16,7 @@ const cols = reactive([
   },
   {
     name: "Tgl Efektif",
-    field: "contract_type_name",
+    field: "effective_date",
     content: (row) => moment(row.effective_date, 'YYYY-MM-DD').format('DD/MM/YYYY'),
   },
 ]);
