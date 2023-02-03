@@ -1,16 +1,27 @@
 <script setup>
 import TableComponent from "@/components/Table";
 import FlatPickr from "vue-flatpickr-component";
+import VueSelect from "vue-select";
+
 import { reactive } from "vue";
 
 
 const emit = defineEmits(['submit'])
 
+
+const data = reactive({
+  statuses: [
+    { value: 0, label: 'Draft' },
+    { value: 1, label: 'Selesai' },
+    { value: 2, label: 'Batal' }
+  ]
+})
 const state = reactive({
   users: [],
   user_ids: [],
   merchants: [],
   merchant_ids: [],
+  statuses: [],
   dates: "",
 });
 
@@ -82,6 +93,7 @@ function handleFilterReset() {
     user_ids: [],
     merchants: [],
     merchant_ids: [],
+    statuses: [],
     dates: "",
   });
   emit('submit', {})
@@ -93,6 +105,9 @@ function handleFilterSubmit() {
 </script>
 
 <style lang="scss">
+@import "vue-select/src/scss/vue-select";
+@import "@/assets/scss/vendor/vue-select";
+
 // Flatpickr + Custom overrides
 @import "flatpickr/dist/flatpickr.css";
 @import "@/assets/scss/vendor/flatpickr";
@@ -124,7 +139,7 @@ function handleFilterSubmit() {
           <template #content>
             <div class="block-content fs-sm">
               <div class="row">
-                <div class="col-12">
+                <div class="col-12 mt-4">
                   <h6 class="mb-2">Tanggal</h6>
                   <FlatPickr
                     id="example-flatpickr-range"
@@ -141,8 +156,19 @@ function handleFilterSubmit() {
                   />
                 </div>
 
-                <div class="col-12">
-                  <h6 class="mt-4 mb-2">Pegawai</h6>
+                <div class="col-12 mt-4">
+                  <h6 class="mb-2">Status</h6>
+                  <VueSelect
+                    v-model="state.statuses"
+                    :options="data.statuses"
+                    label="label"
+                    multiple
+                    placeholder="Choose a value.."
+                  ></VueSelect>
+                </div>
+
+                <div class="col-12 mt-4">
+                  <h6 class="mb-2">Pegawai</h6>
                   <TableComponent
                     endpoint="users"
                     :cols="cols.user"
@@ -169,8 +195,8 @@ function handleFilterSubmit() {
                   </TableComponent>
                 </div>
 
-                <div class="col-12">
-                  <h6 class="mt-4 mb-2">Warung</h6>
+                <div class="col-12 mt-4">
+                  <h6 class="mb-2">Warung</h6>
                   <TableComponent
                     endpoint="merchant"
                     :cols="cols.merchant"

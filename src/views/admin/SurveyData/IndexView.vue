@@ -13,7 +13,8 @@ const state = reactive({
 const cols = reactive([
   {
     name: "Waktu Tgl",
-    field: "date_time",
+    field: "schedule_date",
+    content: row => moment(row.schedule_date).format('DD/MM/YYYY HH:mm')
   },
   {
     name: "Pegawai",
@@ -23,19 +24,27 @@ const cols = reactive([
     name: "Warung",
     field: "merchant_name",
   },
+  {
+    name: "Status",
+    field: "status_label",
+    content: row => {
+      const bgClass = ['bg-warning', 'bg-success', 'bg-danger'][row.status];
+      return `<span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill ${bgClass}-light text-success">${row.status_label}</span>`
+    }
+  },
 ]);
 
 function handleFilter(params) {
   state.filter = params;
-  const { merchant_ids, user_ids } = params;
-  const dates = params.dates.split(" s/d ");
+  const { merchant_ids=[], user_ids=[], statuses=[] } = params;
+  const dates = params.dates ? params.dates.split(" s/d ") : '';
   const fetch_params = {
-    merchant_ids,
-    user_ids,
+    merchant_id: merchant_ids.join(', '),
+    user_id: user_ids.join(', '),
+    status: statuses.length > 0 ? statuses.map(status => status.value).join(', ') : '',
     start_date: params.dates != '' ? moment(dates[0]).format("YYYY-MM-DD") : '',
     end_date: params.dates != '' ? moment(dates[1]).format("YYYY-MM-DD") : ''
   }
-  debugger;
   TableRef.value.fetch(fetch_params);
 }
 </script>
@@ -76,24 +85,20 @@ function handleFilter(params) {
           </tr>
           <tr>
             <th scope="row" width="160">Pegawai</th>
-            <td>
-              <span v-for="user in state.filter.users" :key="user.id">
-                {{ user.name }},
-              </span>
-            </td>
+            <td>{{ state.filter.users.map(user => user.name).join(', ') }}</td>
           </tr>
           <tr>
             <th scope="row" width="160">Warung</th>
-            <td>
-              <span v-for="merchant in state.filter.merchants" :key="merchant.id">
-                {{ merchant.name }},
-              </span>
-            </td>
+            <td>{{ state.filter.merchants.map(merchant => merchant.name).join(', ') }}</td>
+          </tr>
+          <tr>
+            <th scope="row" width="160">Status</th>
+            <td>{{ state.filter.statuses.map(status => status.label).join(', ') }}</td>
           </tr>
         </tbody>
       </table>
     </BaseBlock>
-    <TableComponent ref="TableRef" endpoint="survey/schedule" :cols="cols" :extra="state.filter">
+    <TableComponent ref="TableRef" endpoint="survey" :cols="cols" :extra="state.filter">
     </TableComponent>
   </div>
 

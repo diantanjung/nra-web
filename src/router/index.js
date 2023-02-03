@@ -105,9 +105,9 @@ router.beforeEach(async(to, from, next) => {
           next();
           NProgress.done();
         } catch (error) {
-          await store.logout()
           next({ name: 'login' });
           NProgress.done();
+          await store.logout()
         }
       }
     }

@@ -175,7 +175,7 @@ defineExpose({
                   <th scope="col">Aksi</th>
                 </tr>
               </thead>
-              <DatasetItem tag="tbody" class="fs-sm">
+              <DatasetItem v-if="state.data.length > 0" tag="tbody" class="fs-sm">
                 <template #default="{ row, rowIndex }">
                   <tr>
                     <th scope="row">{{ rowIndex + 1 }}</th>
@@ -198,6 +198,13 @@ defineExpose({
                   </tr>
                 </template>
               </DatasetItem>
+              <template v-else>
+                <tr>
+                  <td :colspan="props.cols.length + 2" class="text-center">
+                    <p>Data Kosong</p>
+                  </td>
+                </tr>
+              </template>
             </table>
           </div>
         </div>

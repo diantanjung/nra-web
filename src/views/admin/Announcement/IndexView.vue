@@ -17,7 +17,7 @@ const cols = reactive([
     field: "is_active",
     content: row => {
       const bgClass = row.is_active ? 'bg-success-light' : 'bg-danger-light';
-      return `<span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill ${bgClass} text-success">Aktif</span>`
+      return `<span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill ${bgClass} text-success">${row.is_active ? 'Aktif' : 'Nonaktif'}</span>`
     }
   },
 ]);

@@ -14,6 +14,7 @@ const cols = reactive([
   {
     name: "Waktu Tgl",
     field: "date_time",
+    content: row => moment(row.schedule_date).format('DD/MM/YYYY HH:mm')
   },
   {
     name: "Pegawai",
@@ -27,15 +28,14 @@ const cols = reactive([
 
 function handleFilter(params) {
   state.filter = params;
-  const { merchant_ids, user_ids } = params;
-  const dates = params.dates.split(" s/d ");
+  const { merchant_ids=[], user_ids=[] } = params;
+  const dates = params.dates ? params.dates.split(" s/d ") : '';
   const fetch_params = {
     merchant_ids,
     user_ids,
     start_date: params.dates != '' ? moment(dates[0]).format("YYYY-MM-DD") : '',
     end_date: params.dates != '' ? moment(dates[1]).format("YYYY-MM-DD") : ''
   }
-  debugger;
   TableRef.value.fetch(fetch_params);
 }
 </script>
