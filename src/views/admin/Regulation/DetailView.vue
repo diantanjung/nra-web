@@ -2,6 +2,6 @@
 </script>
 
 <template>
-  <BasePageHeading title="Detail Product Category" />
+  <BasePageHeading title="Detail Regulation" />
   <div class="content"></div>
 </template>

@@ -2,6 +2,6 @@
 </script>
 
 <template>
-  <BasePageHeading title="Tambah Product Category" />
+  <BasePageHeading title="Tambah Client" />
   <div class="content"></div>
 </template>

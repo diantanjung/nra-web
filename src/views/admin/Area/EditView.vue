@@ -2,6 +2,6 @@
 </script>
 
 <template>
-  <BasePageHeading title="Ubah Product Category" />
+  <BasePageHeading title="Ubah Area" />
   <div class="content"></div>
 </template>

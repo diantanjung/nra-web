@@ -34,16 +34,16 @@ const cols = reactive([
 <template>
   <!-- Hero -->
   <BasePageHeading title="Client">
-    <!-- <template #extra>
+    <template #extra>
       <button
         type="button"
         class="btn btn-primary text-white"
-        @click="router.push('/admin/master/user/create')"
+        @click="router.push({ name: 'master-client-create' })"
       >
         <i class="fa fa-add opacity-50 me-1"></i>
         Tambah Data
       </button>
-    </template> -->
+    </template>
   </BasePageHeading>
   <!-- END Hero -->
 
@@ -52,9 +52,9 @@ const cols = reactive([
     <TableComponent endpoint="client" :cols="cols">
       <template #actions="{ row }">
         <div class="btn-group">
-          <!-- <button type="button" class="btn btn-alt-info" @click="router.push(`/admin/master/user/edit/${row.id}`)">
+          <button type="button" class="btn btn-alt-info" @click="router.push({ name: 'master-client-edit', params: { id: row.id }})">
             <i class="fa fa-fw fa-pencil-alt"></i>
-          </button> -->
+          </button>
           <button type="button" class="btn btn-alt-success" @click="router.push({ name: 'master-client-detail', params: { id: row.id }})">
             <i class="fa fa-fw fa-list"></i>
           </button>

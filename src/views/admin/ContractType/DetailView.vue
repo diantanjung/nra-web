@@ -2,6 +2,6 @@
 </script>
 
 <template>
-  <BasePageHeading title="Detail Product Category" />
+  <BasePageHeading title="Detail Contract Type" />
   <div class="content"></div>
 </template>
