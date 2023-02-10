@@ -116,11 +116,11 @@ onMounted(async () => {
             </div>
             <div class="mb-4">
               <FormLabel required>Hak Akses</FormLabel>
-              <input readonly type="text" id="val-username" class="form-control" v-model="state.user.username" />
+              <input readonly type="text" id="val-username" class="form-control" v-model="state.user.role_name" />
             </div>
             <div class="mb-4">
               <FormLabel required>Client</FormLabel>
-              <input readonly type="text" id="val-username" class="form-control" v-model="state.user.username" />
+              <input readonly type="text" id="val-username" class="form-control" v-model="state.user.client_name" />
             </div>
             <div class="mb-4">
               <FormLabel required>No. HP</FormLabel>

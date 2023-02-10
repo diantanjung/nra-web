@@ -18,25 +18,25 @@ export default [
     name: 'Attendance',
     to: 'admin-attendance',
     icon: 'si si-user-following',
-    roles: ALL,
+    roles: [ADMIN],
   },
   {
     name: 'Approval',
     to: 'admin-approval',
     icon: 'si si-check',
-    roles: ALL,
+    roles: [ADMIN],
   },
   {
     name: 'Log Book',
     to: 'admin-log-book',
     icon: 'si si-notebook',
-    roles: ALL,
+    roles: [ADMIN],
   },
   {
     name: 'Announcement',
     to: 'admin-announcement',
     icon: 'si si-feed',
-    roles: ALL,
+    roles: [ADMIN],
   },
   {
     name: "Surveyor",
@@ -47,13 +47,13 @@ export default [
     name: 'Survey Data',
     to: 'admin-survey-data',
     icon: 'si si-note',
-    roles: ALL,
+    roles: [ADMIN],
   },
   {
     name: 'Schedule',
     to: 'admin-schedule',
     icon: 'si si-calendar',
-    roles: ALL,
+    roles: [ADMIN],
   },
   {
     name: 'Report',
@@ -66,21 +66,21 @@ export default [
     name: 'Import',
     to: 'admin-import',
     icon: 'si si-cloud-upload',
-    roles: ALL,
+    roles: [ADMIN],
   },
   
   {
     name: 'Store',
     to: 'admin-store',
     icon: 'fa fa-store',
-    roles: ALL,
+    roles: [ADMIN],
   },
   
   {
     name: 'Product',
     to: 'admin-product',
     icon: 'si si-basket',
-    roles: ALL,
+    roles: [ADMIN],
   },
   {
     name: "Master",
