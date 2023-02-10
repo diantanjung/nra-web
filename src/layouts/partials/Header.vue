@@ -120,7 +120,7 @@ onUnmounted(() => {
                 >
                   <img
                     class="rounded-circle"
-                    src="/assets/media/avatars/avatar10.jpg"
+                    :src="authStore.auth.photo"
                     alt="Header Avatar"
                     style="width: 21px"
                   />
@@ -140,12 +140,12 @@ onUnmounted(() => {
                   >
                     <img
                       class="img-avatar img-avatar48 img-avatar-thumb"
-                      src="/assets/media/avatars/avatar10.jpg"
+                      :src="authStore.auth.photo"
                       alt="Header Avatar"
                     />
                     <p class="mt-2 mb-0 fw-medium">{{ authStore.auth.name }}</p>
                     <p class="mb-0 text-muted fs-sm fw-medium">
-                      {{ authStore.auth.username }}
+                      {{ authStore.auth.role_name }}
                     </p>
                   </div>
                   <div class="p-2">
