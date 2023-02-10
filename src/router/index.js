@@ -25,7 +25,8 @@ const Login = () => import("@/views/auth/LogInView.vue");
 // * DASHBOARD
 const Dashboard = () => import("@/views/admin/DashboardView.vue");
 
-
+// * PROFILE
+const Profile = () => import("@/views/admin/Profile/IndexView.vue");
 
 
 // Set all routes
@@ -51,6 +52,11 @@ const routes = [
         path: "dashboard",
         name: "admin-dashboard",
         component: Dashboard,
+      },
+      {
+        path: "profile",
+        name: "admin-profile",
+        component: Profile,
       },
       ...AttendanceRoutes,
       ...ApprovalRoutes,

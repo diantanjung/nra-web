@@ -15,6 +15,14 @@ export function info() {
   });
 }
 
+export function ChangePassword(data) {
+  return request({
+    url: 'auth/change-password',
+    method: 'post',
+    data: data,
+  });
+}
+
 export function RoleList() {
   return request({
     url: 'auth/roles',

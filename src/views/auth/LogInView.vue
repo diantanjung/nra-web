@@ -2,6 +2,7 @@
 import { useAuthStore } from "@/stores/auth";
 import { useTemplateStore } from "@/stores/template";
 import { computed, reactive } from "vue";
+import { useToast } from 'vue-toastification'
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
@@ -10,6 +11,8 @@ import { required } from "@vuelidate/validators";
 // Main store and Router
 const store = useTemplateStore();
 const authStore = useAuthStore();
+const toast = useToast();
+
 
 // Input state variables
 const state = reactive({
@@ -40,6 +43,7 @@ async function onSubmit() {
     await authStore.login(state);
   } catch (error) {
     console.log(error);
+    toast.error("Password atau Username salah!");
   }
   state.isLoading = false;
 }

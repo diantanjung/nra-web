@@ -150,7 +150,7 @@ onUnmounted(() => {
                   </div>
                   <div class="p-2">
                     <RouterLink
-                      :to="{ name: 'admin-dashboard' }"
+                      :to="{ name: 'admin-profile' }"
                       class="dropdown-item d-flex align-items-center justify-content-between"
                     >
                       <span class="fs-sm fw-medium">Profile</span>
